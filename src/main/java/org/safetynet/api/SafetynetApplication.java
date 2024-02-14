@@ -1,4 +1,4 @@
-package org.safetynet.API;
+package org.safetynet.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,4 +10,8 @@ public class SafetynetApplication {
 		SpringApplication.run(SafetynetApplication.class, args);
 	}
 
+	/*@Bean
+    public IdentityBasis identityBasis() {
+        return new IdentityBasis();
+    }*/
 }
