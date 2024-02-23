@@ -1,5 +1,6 @@
 package org.safetynet.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import org.safetynet.api.model.MedicalRecord;
 import java.util.Date;
 
 @Data
+@JsonFilter("filtreDynamiquePersonEntity")
 //@AllArgsConstructor
 //@EqualsAndHashCode(callSuper=false)
 public class PersonEntity extends IdentityBasisEntity {
@@ -27,13 +29,7 @@ public class PersonEntity extends IdentityBasisEntity {
     private String idFireStation;
     private String idMedicalRecord;
 
-    /*public PersonEntity(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = firstName+lastName;
-    }
-
-    */public PersonEntity(){
+    public PersonEntity(){
 
     }
 
@@ -50,7 +46,5 @@ public class PersonEntity extends IdentityBasisEntity {
         this.idFireStation = idFireStation;
         this.idMedicalRecord = idMedicalRecord;
     }
-    /*public String getId() {
-        return id;
-    }*/
+
 }

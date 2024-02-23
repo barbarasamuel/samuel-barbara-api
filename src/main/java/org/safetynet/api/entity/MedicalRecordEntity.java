@@ -31,8 +31,5 @@ public class MedicalRecordEntity extends IdentityBasisEntity{
         this.medications = medications;
         this.allergies = allergies;
     }
-//TODO: penser à generer
-    /*public String getId() {
-        return this.id;
-    }*/
+
 }

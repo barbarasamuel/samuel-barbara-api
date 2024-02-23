@@ -1,5 +1,5 @@
 package org.safetynet.api.constants;
 
-public abstract class PathsConstants {
-    public static final String FILEPATH = "/resources/data.json";
+public class PathsConstants {
+    public static final String FILEPATH = "classpath:data.json";//"/resources/data.json";
 }

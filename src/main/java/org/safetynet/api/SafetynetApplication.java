@@ -2,16 +2,16 @@ package org.safetynet.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class SafetynetApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SafetynetApplication.class, args);
+
+		ApplicationContext applicationContext = SpringApplication.run(SafetynetApplication.class, args);
+
+
 	}
 
-	/*@Bean
-    public IdentityBasis identityBasis() {
-        return new IdentityBasis();
-    }*/
 }

@@ -1,27 +1,28 @@
 package org.safetynet.api.repository;
 
-import lombok.Getter;
-import org.safetynet.api.entity.GenericEntity;
 import org.safetynet.api.entity.IdentityBasisEntity;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Arrays.stream;
 
-public class GenericRepository <E extends IdentityBasisEntity,I>{
+public abstract class GenericRepository <E extends IdentityBasisEntity,I >{
     //public class GenericRepository <E extends GenericEntity,I>{
-    List<E> data = new ArrayList<E>();
+    protected List<E> data = new ArrayList<E>();
+    protected E currentObject;
 
-    /*@Getter
-    IdentityBasisEntity identityBasisEntity;*/
-    public List<E> getFindAll() throws Exception {
+    public abstract void LoadData() throws IOException;
+
+    public List<E> getFindAll() {
+
         return this.data;
     }
 
-    public Optional<E> getElement(I id ){
-        //TODO
+    public Optional<E> findById(I id ){
+
         Optional<E> elementById = data.stream().filter(e -> e.getId().equals(id)).findFirst();//renvoie un optional
     return elementById;
     }
@@ -33,27 +34,30 @@ public class GenericRepository <E extends IdentityBasisEntity,I>{
         return element;
     }
 
-    public List<E> putElement(I id, E element){
+    //public List<E> putElement(I id, E element){
+    public E patchElement(I id, E element){
+        int index = 0;
         Optional<E> elementById = data.stream().filter(e -> e.getId().equals(id)).findFirst();//renvoie un optional
 
         if(elementById.isPresent()){
 
-            int index = this.data.indexOf(elementById.get());
+            index = this.data.indexOf(elementById.get());
             this.data.set(index,element);
 
         }
-        return this.data;
+        return this.data.get(index);
     }
 
-    public List<E> deleteElement(I id){
+    public E deleteElement(I id){
+        int index =0;
         Optional<E> elementById = data.stream().filter(e -> e.getId().equals(id)).findFirst();
 
         if(elementById.isPresent()){
 
-            int index = this.data.indexOf(elementById.get());
+            index = this.data.indexOf(elementById.get());
             this.data.remove(index);
         }
-        return this.data;
+        return this.data.get(index);
 
 
     }

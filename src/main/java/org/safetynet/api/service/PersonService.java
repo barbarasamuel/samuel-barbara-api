@@ -5,15 +5,20 @@ import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.mappers.PersonMapper;
 import org.safetynet.api.model.Person;
 import org.safetynet.api.repository.FireStationRepository;
+import org.safetynet.api.repository.GenericRepository;
 import org.safetynet.api.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-@Data
+
 @Service
 public class PersonService {
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -27,50 +32,64 @@ public class PersonService {
     public Person postPerson(Person addedPerson){
         PersonEntity personEntity = personMapper.convertToEntity(addedPerson);
         PersonEntity dataPerson = personRepository.postElement(personEntity);
-        Person createdPerson = personMapper.convertToPerson(dataPerson);
-        return createdPerson;
+        addedPerson  = personMapper.convertToPerson(dataPerson);
+        return addedPerson;
+    }
+
+    public Person patchPerson(String id,Person updatedPerson){
+        PersonEntity personEntity = personMapper.convertToEntity(updatedPerson);
+        PersonEntity dataPerson = personRepository.patchElement(id,personEntity);
+        updatedPerson  = personMapper.convertToPerson(dataPerson);
+        return updatedPerson;
+    }
+
+    public Person deletePerson(String id){
+        //PersonEntity personEntity = personMapper.convertToEntity(updatedPerson);
+        PersonEntity dataPerson = personRepository.deleteElement(id);
+        Person updatedPerson  = personMapper.convertToPerson(dataPerson);
+        return updatedPerson;
     }
 
     public Iterable<PersonEntity>getListPersonWithStationNumber(String station) throws Exception {
-        List<PersonEntity> dataPerson = personRepository.getFindAll();
-        //List<FireStationEntity> dataFireStation = fireStationRepository.getFindAll();
+        List<PersonEntity> dataPerson = personRepository.getAllWithStationNumber(station);
 
         return dataPerson;
     }
 
 
-    public Iterable<PersonEntity>getListChildren18orless(String address) throws Exception {
-        List<PersonEntity> dataChildren = personRepository.getFindAll();
-        //List<FireStationEntity> dataFireStation = fireStationRepository.getFindAll();
+    public Iterable<PersonEntity>getListChildren18orless(String address, Date birthDate) throws Exception {
+
+        List<PersonEntity> dataChildren = personRepository.getAllByAddressAndBirthDate(address,birthDate);
+
         return dataChildren;
     }
 
-    public Iterable<PersonEntity> getListPhoneNumber(String station) throws Exception {
-        List<PersonEntity> dataPhoneNumber = personRepository.getFindAll();
+    public Iterable<PersonEntity> getListPhoneNumber(String station) {
+        List<PersonEntity> dataPhoneNumber = personRepository.getAllPhoneNumberByStation(station);
 
         return dataPhoneNumber;
     }
 
-    public Iterable<PersonEntity> getListPersonsLivingTo(String address) throws Exception {
-        List<PersonEntity> dataPersonsLivingTo = personRepository.getFindAll();
+    public Iterable<PersonEntity> getListPersonsLivingTo(String address) {
+        List<PersonEntity> dataPersonsLivingTo = personRepository.getAllLivingTo(address);
 
         return dataPersonsLivingTo;
     }
 
     public Iterable<PersonEntity> getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
-        List<PersonEntity> dataPersonsCorrespondentToStationNumbers = personRepository.getFindAll();
+        List<PersonEntity> dataPersonsCorrespondentToStationNumbers = personRepository.getAllCorrespondentToStationNumbers(stationNumbers);
 
         return dataPersonsCorrespondentToStationNumbers;
     }
 
     public Iterable<PersonEntity> getListPersonsNaming(String firstName,String lastName) throws Exception {
-        List<PersonEntity> dataPersonsNaming = personRepository.getFindAll();
+        List<PersonEntity> dataPersonsNaming = personRepository.getAllNaming(firstName,lastName);
 
         return dataPersonsNaming;
     }
 
-    public Iterable<PersonEntity> getListCityAddressMails(String city) throws Exception {
-        List<PersonEntity> dataCityAddressMails = personRepository.getFindAll();
+    public Iterable<PersonEntity> getAddressMailsListToCity(String city) throws Exception {
+        List<PersonEntity> dataCityAddressMails = personRepository.getAllAddressMailsListToCity(city);
 
         return dataCityAddressMails;
     }

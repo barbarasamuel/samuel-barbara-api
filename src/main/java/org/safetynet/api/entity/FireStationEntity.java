@@ -12,7 +12,5 @@ public class FireStationEntity extends IdentityBasisEntity {
         this.id = station;
         this.address = address;
     }
-    /*public String getId() {
-        return this.station;
-    }*/
+
 }
