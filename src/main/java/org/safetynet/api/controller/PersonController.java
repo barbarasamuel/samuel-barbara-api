@@ -3,6 +3,7 @@ package org.safetynet.api.controller;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.model.Person;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Slf4j
@@ -68,12 +70,20 @@ public class PersonController
     @GetMapping("/firestation?stationNumber={station_number}")
     //public Iterable<PersonEntity> getListPersonWithStationNumber(@PathVariable("station_number") String station_number) throws Exception {//public List<Person>getListPersonWithStationNumber(){
     public MappingJacksonValue getListPersonWithStationNumber(@PathVariable("station_number") String station_number) throws Exception {
-        Iterable<PersonEntity> persons = personService.getListPersonWithStationNumber(station_number);
-        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("id","eMail","birthDate","idFireStation","idMedicalRecord");
-        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePersonEntity", monFiltre);
-        MappingJacksonValue personsFiltres = new MappingJacksonValue(persons);
-        personsFiltres.setFilters(listeDeNosFiltres);
-        return personsFiltres;
+        try {
+            Iterable<PersonEntity> persons = personService.getListPersonWithStationNumber(station_number);
+            SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("id", "eMail", "birthDate", "idFireStation", "idMedicalRecord");
+            FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePersonEntity", monFiltre);
+            MappingJacksonValue personsFiltres = new MappingJacksonValue(persons);
+            personsFiltres.setFilters(listeDeNosFiltres);
+            log.info("Requete getListPersonWithStationNumber ok");
+            return ResponseEntity.status(HttpStatus.OK).body(personsFiltres).getBody();
+        }catch(Exception e){
+            log.error("Requete getListPersonWithStationNumber failed ", e);
+            Iterable<PersonEntity> persons = personService.getListPersonWithStationNumber(station_number);
+            MappingJacksonValue personsFiltres = new MappingJacksonValue(persons);
+            return ResponseEntity.status(HttpStatus.OK).body(personsFiltres).getBody();
+        }
     }
 
     @GetMapping("/childAlert?address={address}&birthdate>={birthdate}")
@@ -85,13 +95,7 @@ public class PersonController
         personsFiltres.setFilters(listeDeNosFiltres);
         return personsFiltres;
     }
-  /*
-    @RequestMapping(method= RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE }, value="/firestation?stationNumber={station_number}")
-    public List<Person> getListPersonWithStationNumber(@PathVariable("station_number"),int station_number){
-        List<Person> list = personService.getListPersonWithStationNumber();
-        return list;
-    }
-    */
+
   @GetMapping("/phoneAlert?firestation={firestation_number}")
   public MappingJacksonValue getListPhoneNumber(@PathVariable("firestation_number") String firestation_number) throws Exception {
       Iterable<PersonEntity> phoneNumbers = personService.getListPhoneNumber(firestation_number);
@@ -109,6 +113,11 @@ public class PersonController
         FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePersonEntity", monFiltre);
         MappingJacksonValue personsLivingToFiltres = new MappingJacksonValue(personsLivingTo);
         personsLivingToFiltres.setFilters(listeDeNosFiltres);
+        /////////////
+        //List<PersonEntity> personEntityList = new ArrayList<PersonEntity>();
+        //personEntityList.add(dataPerson);
+        ////////////
+
         return personsLivingToFiltres;
     }
 

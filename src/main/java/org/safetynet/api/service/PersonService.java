@@ -1,6 +1,7 @@
 package org.safetynet.api.service;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.mappers.PersonMapper;
 import org.safetynet.api.model.Person;
@@ -11,11 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
+@Slf4j
 @Service
 public class PersonService {
 
@@ -30,9 +32,11 @@ public class PersonService {
 
 
     public Person postPerson(Person addedPerson){
+
         PersonEntity personEntity = personMapper.convertToEntity(addedPerson);
         PersonEntity dataPerson = personRepository.postElement(personEntity);
         addedPerson  = personMapper.convertToPerson(dataPerson);
+
         return addedPerson;
     }
 
@@ -51,9 +55,15 @@ public class PersonService {
     }
 
     public Iterable<PersonEntity>getListPersonWithStationNumber(String station) throws Exception {
-        List<PersonEntity> dataPerson = personRepository.getAllWithStationNumber(station);
-
-        return dataPerson;
+        try {
+            List<PersonEntity> dataPerson = personRepository.getAllWithStationNumber(station);
+            log.info("getListPersonWithStationNumber method ok");
+            return dataPerson;
+        }catch(Exception e){
+            List<PersonEntity> dataPerson = personRepository.getAllWithStationNumber(station);
+            log.error("getListPersonWithStationNumber method failed ", e);
+            return dataPerson;
+        }
     }
 
 

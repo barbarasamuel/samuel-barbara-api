@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static org.safetynet.api.constants.PathsConstants.FILEPATH;
+import static org.safetynet.api.constants.PathsConstants.READFILEPATH;
 @Slf4j
 @Component
 public class JSONReader {
@@ -34,7 +34,7 @@ public class JSONReader {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            Resource resource = resourceLoader.getResource(FILEPATH);
+            Resource resource = resourceLoader.getResource(READFILEPATH);
             InputStream inputStream = resource.getInputStream();
             JsonNode rootNode = objectMapper.readTree(inputStream);
 
@@ -67,7 +67,7 @@ public class JSONReader {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            Resource resource = resourceLoader.getResource(FILEPATH);
+            Resource resource = resourceLoader.getResource(READFILEPATH);
             assert resource != null;
             InputStream inputStream = resource.getInputStream();
             JsonNode rootNode = objectMapper.readTree(inputStream);
@@ -123,7 +123,7 @@ public class JSONReader {
             List<FireStationEntity> fireStationList = loadFireStations();
             List<MedicalRecordEntity> medicalRecordList = loadMedicalRecords();
 
-            Resource resource = resourceLoader.getResource(FILEPATH);
+            Resource resource = resourceLoader.getResource(READFILEPATH);
             if(resource != null){
                 inputStream = resource.getInputStream();
                 JsonNode rootNode = objectMapper.readTree(inputStream);
