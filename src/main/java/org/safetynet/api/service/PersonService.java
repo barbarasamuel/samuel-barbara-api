@@ -55,15 +55,11 @@ public class PersonService {
     }
 
     public Iterable<PersonEntity>getListPersonWithStationNumber(String station) throws Exception {
-        try {
+
             List<PersonEntity> dataPerson = personRepository.getAllWithStationNumber(station);
             log.info("getListPersonWithStationNumber method ok");
             return dataPerson;
-        }catch(Exception e){
-            List<PersonEntity> dataPerson = personRepository.getAllWithStationNumber(station);
-            log.error("getListPersonWithStationNumber method failed ", e);
-            return dataPerson;
-        }
+
     }
 
 

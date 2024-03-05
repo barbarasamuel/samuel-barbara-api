@@ -25,8 +25,7 @@ public class FireStationController {
             return new ResponseEntity<>(addedFireStation, HttpStatus.CREATED);
         }catch (Exception e){
             log.error("fireStationService.postFireStation failed",e);
-            addedFireStation = fireStationService.postFireStation(fireStation);
-            return new ResponseEntity<>(addedFireStation, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(fireStation, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -38,8 +37,7 @@ public class FireStationController {
             return new ResponseEntity<>(updatedFireStation, HttpStatus.OK);
         }catch(Exception e){
             log.error("fireStationService.patchFireStation failed",e);
-            FireStation updatedFireStation = fireStationService.patchFireStation(id,fireStation);
-            return new ResponseEntity<>(updatedFireStation, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(fireStation, HttpStatus.BAD_REQUEST);
         }
     }
     @DeleteMapping("/fireStation/{id}")
@@ -50,8 +48,7 @@ public class FireStationController {
             return new ResponseEntity<>(deletedFireStation, HttpStatus.OK);
         }catch(Exception e){
             log.error("fireStationService.deleteFireStation failed",e);
-            FireStation deletedFireStation = fireStationService.deleteMedicalRecord(id);
-            return new ResponseEntity<>(deletedFireStation, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(id, HttpStatus.BAD_REQUEST);
         }
     }
 

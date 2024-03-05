@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import java.util.Date;
 
 //@NoArgsConstructor
@@ -22,7 +23,7 @@ public class MedicalRecordEntity extends IdentityBasisEntity{
     //@Getter
     private String allergies;
 
-    public MedicalRecordEntity(String id,String firstName,String lastName,Date birthdate,String medications,String allergies){
+    public MedicalRecordEntity(String id, String firstName, String lastName, Date birthdate, String medications, String allergies){
 
         this.id = firstName+lastName;
         this.firstName = firstName;

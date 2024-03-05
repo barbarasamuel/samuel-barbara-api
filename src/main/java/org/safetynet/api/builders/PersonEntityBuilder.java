@@ -1,8 +1,7 @@
 package org.safetynet.api.builders;
 
 import org.safetynet.api.entity.PersonEntity;
-import org.safetynet.api.model.FireStation;
-import org.safetynet.api.model.MedicalRecord;
+
 
 import java.util.Date;
 

@@ -3,19 +3,17 @@ package org.safetynet.api.controller;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.model.Person;
 import org.safetynet.api.service.PersonService;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Slf4j
@@ -33,9 +31,9 @@ public class PersonController
             log.info("personService.postPerson with success");
             return new ResponseEntity<>(addedPerson, HttpStatus.CREATED);
         }catch(Exception e){
-            Person addedPerson = personService.postPerson(person);
+
             log.error("personService.postPerson failed",e);
-            return new ResponseEntity<>(addedPerson, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(person, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -47,8 +45,7 @@ public class PersonController
             return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
         }catch(Exception e){
             log.error("personService.patchPerson failed",e);
-            Person updatedPerson = personService.patchPerson(id,person);
-            return new ResponseEntity<>(updatedPerson, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(person, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -60,17 +57,18 @@ public class PersonController
             return new ResponseEntity<>(deletedPerson, HttpStatus.OK);
         }catch(Exception e){
             log.error("personService.deletePerson failed",e);
-            Person deletedPerson = personService.deletePerson(id);
-            return new ResponseEntity<>(deletedPerson, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(id, HttpStatus.BAD_REQUEST);
         }
     }
 
     //@GetMapping(value = "personsJson", produces = { MediaType.APPLICATION_JSON_VALUE })
     //@RequestMapping(method=RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE }, value="/firestation?stationNumber={station_number}")
-    @GetMapping("/firestation?stationNumber={station_number}")
+    //@GetMapping(name="/firestation?stationNumber={station_number}",produces = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping("/firestation/{station_number}")
+
     //public Iterable<PersonEntity> getListPersonWithStationNumber(@PathVariable("station_number") String station_number) throws Exception {//public List<Person>getListPersonWithStationNumber(){
     public MappingJacksonValue getListPersonWithStationNumber(@PathVariable("station_number") String station_number) throws Exception {
-        try {
+
             Iterable<PersonEntity> persons = personService.getListPersonWithStationNumber(station_number);
             SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("id", "eMail", "birthDate", "idFireStation", "idMedicalRecord");
             FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePersonEntity", monFiltre);
@@ -78,12 +76,7 @@ public class PersonController
             personsFiltres.setFilters(listeDeNosFiltres);
             log.info("Requete getListPersonWithStationNumber ok");
             return ResponseEntity.status(HttpStatus.OK).body(personsFiltres).getBody();
-        }catch(Exception e){
-            log.error("Requete getListPersonWithStationNumber failed ", e);
-            Iterable<PersonEntity> persons = personService.getListPersonWithStationNumber(station_number);
-            MappingJacksonValue personsFiltres = new MappingJacksonValue(persons);
-            return ResponseEntity.status(HttpStatus.OK).body(personsFiltres).getBody();
-        }
+
     }
 
     @GetMapping("/childAlert?address={address}&birthdate>={birthdate}")

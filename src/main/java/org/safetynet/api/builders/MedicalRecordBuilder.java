@@ -3,6 +3,7 @@ package org.safetynet.api.builders;
 import org.safetynet.api.model.MedicalRecord;
 
 
+
 import java.util.Date;
 
 public class MedicalRecordBuilder {

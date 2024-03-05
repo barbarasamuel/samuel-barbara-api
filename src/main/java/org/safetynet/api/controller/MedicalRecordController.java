@@ -24,8 +24,7 @@ public class MedicalRecordController {
             return new ResponseEntity<>(addedMedicalRecord, HttpStatus.CREATED);
         }catch(Exception e){
             log.error("medicalRecordService.postMedicalRecord failed",e);
-            MedicalRecord addedMedicalRecord = medicalRecordService.postMedicalRecord(medicalRecord);
-            return new ResponseEntity<>(addedMedicalRecord, HttpStatus.FAILED_DEPENDENCY);
+             return new ResponseEntity<>(medicalRecord, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -37,8 +36,7 @@ public class MedicalRecordController {
             return new ResponseEntity<>(updatedMedicalRecord, HttpStatus.OK);
         }catch(Exception e){
             log.error("medicalRecordService.patchMedicalRecord failed",e);
-            MedicalRecord updatedMedicalRecord = medicalRecordService.patchMedicalRecord(id,medicalRecord);
-            return new ResponseEntity<>(updatedMedicalRecord, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(medicalRecord, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -50,8 +48,7 @@ public class MedicalRecordController {
             return new ResponseEntity<>(deletedMedicalRecord, HttpStatus.OK);
         }catch(Exception e){
             log.error("medicalRecordService.deleteMedicalRecord failed",e);
-            MedicalRecord deletedMedicalRecord = medicalRecordService.deleteMedicalRecord(id);
-            return new ResponseEntity<>(deletedMedicalRecord, HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity<>(id, HttpStatus.BAD_REQUEST);
         }
     }
 }

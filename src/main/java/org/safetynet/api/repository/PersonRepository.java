@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,20 +34,22 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
    }
 
     public List<PersonEntity> getAllWithStationNumber(String station) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String sminorsDate = "19-02-2006";
-        Date minorsDate = new Date(String.valueOf(dateFormat.parse(sminorsDate)));
-        String smajorsDate = "19-02-2006";
-        Date majorsDate = new Date(String.valueOf(dateFormat.parse(smajorsDate)));
+        /**/SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String sminorsDate = "19/02/2006";
+        //long longMinorsDate = Long.parseLong(sminorsDate);
+        //LocalDate minorsDate = LocalDate.ofEpochDay(longMinorsDate);
+        Date minorsDate = new Date(dateFormat.parse(sminorsDate).getTime());
+        String smajorsDate = "19/02/2006";
+        //long longMajorsDate = Long.parseLong(smajorsDate);
+        //LocalDate majorsDate = LocalDate.ofEpochDay(longMajorsDate);
+        Date majorsDate = new Date(dateFormat.parse(smajorsDate).getTime());
 
-        this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
-        this.data.stream().filter(e -> e.getBirthDate().after(minorsDate) && e.getBirthDate().before(majorsDate)).count();
-                //&&)).count()).toList();
-        //nb de 18 ans et moins et nb d'adultes
-        //long countMinors = this.data.stream().filter(e->e.getBirthDate().after("19-02-2006")).count();
-        //long countMajors = this.data.stream().filter(e->e.getBirthDate().before("20-02-2006")).count();
-        //long countMajors = DateStream.of(this.data).count()
-        return this.data;
+        return this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
+        //return this.data.stream().filter(e -> e.getIdFireStation().equals(station) && (e.getBirthDate().after(minorsDate) && e.getBirthDate().before(majorsDate))).toList();
+        //this.data.stream().filter(e -> e.getBirthDate().after(minorsDate) && e.getBirthDate().before(majorsDate)).count();
+
+
+        //return this.data;
     }
 
     public List<PersonEntity> getAllByAddressAndBirthDate(String value, Date birthDate) {

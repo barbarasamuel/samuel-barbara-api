@@ -3,6 +3,7 @@ package org.safetynet.api.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+
 import java.util.Date;
 @Data
 @AllArgsConstructor
