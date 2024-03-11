@@ -17,8 +17,9 @@ public class FireStationRepository extends GenericRepository <FireStationEntity,
 
     @Autowired
     private JSONReader jsonReader;
+
     //@PostConstruct
-    public void LoadData() throws IOException {
+    public void loadData() throws IOException {
         try{
             this.data = jsonReader.loadFireStations();
             log.info("loadFireStations with success");

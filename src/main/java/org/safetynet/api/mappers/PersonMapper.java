@@ -6,6 +6,8 @@ import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.model.Person;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class PersonMapper {
     public PersonEntity convertToEntity(Person person){
@@ -41,5 +43,13 @@ public class PersonMapper {
                 .withFireStation("")
                 .withMedicalRecord("","")
                 .build();
+    }
+
+    public List<Person> convertToDtoList(List<PersonEntity> personEntities){
+        return personEntities.stream().map(this::convertToPerson).toList();
+    }
+
+    public List<PersonEntity> convertToEntityList(List<Person> persons){
+        return persons.stream().map(this::convertToEntity).toList();
     }
 }

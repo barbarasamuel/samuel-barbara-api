@@ -16,7 +16,7 @@ public class MedicalRecordController {
 
     @Autowired
     private MedicalRecordService medicalRecordService;
-    @PostMapping("/medicalRecord")
+    @PostMapping(value="/medicalRecord", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<MedicalRecord> postMedicalRecord(@RequestBody MedicalRecord medicalRecord) throws Exception {//public List<Person>getListPersonWithStationNumber(){
         try{
             MedicalRecord addedMedicalRecord = medicalRecordService.postMedicalRecord(medicalRecord);
@@ -28,7 +28,7 @@ public class MedicalRecordController {
         }
     }
 
-    @PatchMapping("/medicalRecord/{id}")
+    @PatchMapping(value="/medicalRecord/{id}", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity patchFireStation(@PathVariable("id") String id, @RequestBody MedicalRecord medicalRecord) throws Exception {
         try{
             MedicalRecord updatedMedicalRecord = medicalRecordService.patchMedicalRecord(id,medicalRecord);
@@ -40,7 +40,7 @@ public class MedicalRecordController {
         }
     }
 
-    @DeleteMapping("/medicalRecord/{id}")
+    @DeleteMapping(value="/medicalRecord/{id}", produces = {"application/json"})
     public ResponseEntity patchPerson(@PathVariable("id") String id) throws Exception {
         try{
             MedicalRecord deletedMedicalRecord = medicalRecordService.deleteMedicalRecord(id);

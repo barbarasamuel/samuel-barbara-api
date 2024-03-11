@@ -17,20 +17,19 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.safetynet.api.constants.PathsConstants.READFILEPATH;
 @Slf4j
 @Component
 public class JSONReader {
+
     @Autowired
     private ResourceLoader resourceLoader;
     public List<FireStationEntity> loadFireStations() throws IOException{
 
         List<FireStationEntity> fireStations = new ArrayList<>();
+        //Map<String,String> fireStations = null;
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -38,7 +37,7 @@ public class JSONReader {
             InputStream inputStream = resource.getInputStream();
             JsonNode rootNode = objectMapper.readTree(inputStream);
 
-            JsonNode fireStationsNode = rootNode.get("fireStations");
+            JsonNode fireStationsNode = rootNode.get("firestations");
 
             if (fireStationsNode != null && fireStationsNode.isArray()) {
                 for (JsonNode fireStationNode : fireStationsNode) {
@@ -46,14 +45,16 @@ public class JSONReader {
                     String address = fireStationNode.get("address").asText();
 
                     //FireStationEntity fireStation = new FireStationEntity(station, address);;
-                    FireStationEntity fireStation = new FireStationEntityBuilder()
-                            .withId(station)
+                    FireStationEntity fireStation = new FireStationEntityBuilder(station)
+                            //.withId(station)
                             .withAddress(address)
                             .build();
                     fireStations.add(fireStation);
+                    System.out.println(fireStation.getAddress()+ " " +fireStation.getStation());
+                    //fireStations.put(fireStation.getStation(),fireStation.getAddress());
                 }
             }
-            log.info("The fireStations list is loaded.");
+            log.info("The fireStations list is loaded." + fireStations.size() + " firestations found.");
         }catch(IOException e){
             log.error("Error loading the fireStations list.", e);
 
@@ -72,18 +73,18 @@ public class JSONReader {
             InputStream inputStream = resource.getInputStream();
             JsonNode rootNode = objectMapper.readTree(inputStream);
 
-            JsonNode medicalRecordsNode = rootNode.get("medicalRecords");
+            JsonNode medicalRecordsNode = rootNode.get("medicalrecords");
 
             if (medicalRecordsNode != null && medicalRecordsNode.isArray()) {
                 for (JsonNode medicalRecordNode : medicalRecordsNode) {
-                    String firstName = medicalRecordNode.get("station").asText();
-                    String lastName = medicalRecordNode.get("address").asText();
+                    String firstName = medicalRecordNode.get("firstName").asText();
+                    String lastName = medicalRecordNode.get("lastName").asText();
                     String birthDateInString = medicalRecordNode.get("birthdate").asText();
                     String medications = medicalRecordNode.get("medications").asText();
                     String allergies = medicalRecordNode.get("allergies").asText();
 
-                    birthDateInString = birthDateInString.replace("/","-");
-                    DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    //birthDateInString = birthDateInString.replace("/","-");
+                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     Date birthDate = formatter.parse(birthDateInString);
 
                     //MedicalRecordEntity medicalRecord = new MedicalRecordEntity(firstName+lastName,firstName,lastName,birthDate,medications,allergies);;
@@ -96,7 +97,9 @@ public class JSONReader {
                             .withAllergies(allergies)
                             .build();
                     medicalRecords.add(medicalRecord);
+                    System.out.println(medicalRecord.getId()+ " " +medicalRecord.getMedications());
                 }
+
             }
 
             log.info("The medicalRecords list is loaded.");
@@ -114,9 +117,9 @@ public class JSONReader {
         ObjectMapper objectMapper = new ObjectMapper();
 
         InputStream inputStream;
-        String station = "";
+        /*String station = "";
         Date birthDate = new Date();
-        String idMedicalRecord = "";
+        String idMedicalRecord = "";*/
 
 
         try {
@@ -139,9 +142,12 @@ public class JSONReader {
                         String zip = personNode.get("zip").asText();
                         String phone = personNode.get("phone").asText();
                         String email = personNode.get("email").asText();
+                        String station = null;
+                        Date birthDate = null;
+                        String idMedicalRecord = null;
 
                         for (FireStationEntity fireStation : fireStationList) {
-                            if(Objects.equals(fireStation.getAddress(), address)) {
+                            if(Objects.equals(fireStation.getAddress(), address) && fireStation.getStation()!=null) {
                                 station = fireStation.getStation();
                                 break;
                             }

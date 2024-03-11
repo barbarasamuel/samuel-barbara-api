@@ -18,7 +18,7 @@ public class MedicalRecordRepository extends GenericRepository<MedicalRecordEnti
     @Autowired
     private JSONReader jsonReader;
     //@PostConstruct
-    public void LoadData() throws IOException {
+    public void loadData() throws IOException {
         try{
             this.data = jsonReader.loadMedicalRecords();
             log.info("loadMedicalRecords with success");

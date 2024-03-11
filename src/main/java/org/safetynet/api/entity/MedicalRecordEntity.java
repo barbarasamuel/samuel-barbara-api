@@ -13,10 +13,6 @@ import java.util.Date;
 //@Setter
 @Data
 public class MedicalRecordEntity extends IdentityBasisEntity{
-    //private String id;
-    //private String firstName;
-    //private String lastName;
-    //private Date birthDate;
 
     //@Getter
     private String medications;

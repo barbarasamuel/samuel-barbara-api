@@ -2,10 +2,7 @@ package org.safetynet.api.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.model.FireStation;
-import org.safetynet.api.model.MedicalRecord;
-import org.safetynet.api.model.Person;
 import org.safetynet.api.service.FireStationService;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,7 @@ public class FireStationController {
 
     @Autowired
     private FireStationService fireStationService;
-    @PostMapping("/fireStation")
+    @PostMapping(value = "/fireStation", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<FireStation> postFireStation(@RequestBody FireStation fireStation) throws Exception {
         FireStation addedFireStation;
         try {
@@ -29,7 +26,7 @@ public class FireStationController {
         }
     }
 
-    @PatchMapping("/fireStation/{id}")
+    @PatchMapping(value= "/fireStation/{id}", produces = {"application/json"})
     public ResponseEntity patchFireStation(@PathVariable("id") String id, @RequestBody FireStation fireStation) throws Exception {
         try{
             FireStation updatedFireStation = fireStationService.patchFireStation(id,fireStation);

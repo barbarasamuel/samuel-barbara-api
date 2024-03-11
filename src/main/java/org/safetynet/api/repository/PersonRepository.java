@@ -2,7 +2,9 @@ package org.safetynet.api.repository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.safetynet.api.entity.FireStationEntity;
 import org.safetynet.api.entity.PersonEntity;
+import org.safetynet.api.model.Person;
 import org.safetynet.api.tools.JSONReader;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,8 +27,9 @@ import static java.util.stream.Collectors.toList;
 public class PersonRepository extends GenericRepository<PersonEntity,String> {
     @Autowired
     private JSONReader jsonReader;
+
     @PostConstruct
-   public void LoadData() throws IOException {
+   public void loadData() throws IOException {
        try{
            this.data = jsonReader.loadPersons();
            log.info("loadPersons with success");
@@ -33,31 +38,25 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
        }
    }
 
-    public List<PersonEntity> getAllWithStationNumber(String station) throws ParseException {
-        /**/SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String sminorsDate = "19/02/2006";
-        //long longMinorsDate = Long.parseLong(sminorsDate);
-        //LocalDate minorsDate = LocalDate.ofEpochDay(longMinorsDate);
-        Date minorsDate = new Date(dateFormat.parse(sminorsDate).getTime());
-        String smajorsDate = "19/02/2006";
-        //long longMajorsDate = Long.parseLong(smajorsDate);
-        //LocalDate majorsDate = LocalDate.ofEpochDay(longMajorsDate);
-        Date majorsDate = new Date(dateFormat.parse(smajorsDate).getTime());
+    public List<PersonEntity> getAllPersonsByStationNumber(FireStationEntity station) {
+        /*SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");*/
 
-        return this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
-        //return this.data.stream().filter(e -> e.getIdFireStation().equals(station) && (e.getBirthDate().after(minorsDate) && e.getBirthDate().before(majorsDate))).toList();
-        //this.data.stream().filter(e -> e.getBirthDate().after(minorsDate) && e.getBirthDate().before(majorsDate)).count();
-
-
-        //return this.data;
+        //return this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
+        return this.data.stream().filter(e -> e.getAddress().equals(station.getAddress())).toList();
     }
 
     public List<PersonEntity> getAllByAddressAndBirthDate(String value, Date birthDate) {
         return this.data.stream().filter(e -> e.getBirthDate().after(birthDate) && e.getAddress().equals(value)).toList();
+        
+        //return this.data.stream().filter(e -> e.getBirthDate().isAfter(LocalDate.of(2012,2,17)) && e.getAddress().equals(value)).toList();
+
     }
 
-    public List<PersonEntity> getAllPhoneNumberByStation(String station){
-        return this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
+    public List<PersonEntity> getChildrenFamily(String firstName, String lastName, String address, String zip){
+        return this.data.stream().filter(e -> e.getLastName().equals(lastName) && e.getAddress().equals(address) && e.getZip().equals(zip) && !e.getFirstName().equals(firstName)).toList();
+    }
+    public List<PersonEntity> getAllPhoneNumberByStation(String stationNumber){
+        return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumber)).toList();
     }
 
     public List<PersonEntity> getAllLivingTo(String address){

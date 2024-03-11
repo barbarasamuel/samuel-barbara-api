@@ -8,11 +8,13 @@ public class FireStationBuilder {
     private String address;
 
 
-    public FireStationBuilder withId(String station){
+    /*public FireStationBuilder withId(String station){
         this.id = station;
         return this;
+    }*/
+    public FireStationBuilder (String station){
+        this.id = station;
     }
-
 
     public FireStationBuilder withAddress(String address){
         this.address = address;

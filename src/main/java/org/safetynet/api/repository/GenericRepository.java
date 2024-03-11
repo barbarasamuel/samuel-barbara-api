@@ -1,5 +1,6 @@
 package org.safetynet.api.repository;
 
+import org.safetynet.api.entity.BasisEntity;
 import org.safetynet.api.entity.IdentityBasisEntity;
 
 import java.io.IOException;
@@ -9,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 
-public abstract class GenericRepository <E extends IdentityBasisEntity,I >{
+public abstract class GenericRepository <E extends BasisEntity,I >{
     //public class GenericRepository <E extends GenericEntity,I>{
     protected List<E> data = new ArrayList<E>();
     protected E currentObject;
 
-    public abstract void LoadData() throws IOException;
+    public abstract void loadData() throws IOException;
 
     public List<E> getFindAll() {
 
@@ -24,7 +25,7 @@ public abstract class GenericRepository <E extends IdentityBasisEntity,I >{
     public Optional<E> findById(I id ){
 
         Optional<E> elementById = data.stream().filter(e -> e.getId().equals(id)).findFirst();//renvoie un optional
-    return elementById;
+        return elementById;
     }
     public E postElement(E element){
 

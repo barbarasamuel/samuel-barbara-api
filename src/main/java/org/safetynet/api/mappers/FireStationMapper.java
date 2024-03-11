@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class FireStationMapper {
     public FireStationEntity convertToFireStationEntity(FireStation fireStation){
-        return new FireStationEntityBuilder()
-                .withId(fireStation.getStation())
+        return new FireStationEntityBuilder(fireStation.getStation())
+                //.withId(fireStation.getStation())
                 .withAddress(fireStation.getAddress())
                 .build();
     }
 
     public FireStation convertToFireStation(FireStationEntity fireStationEntity){
 
-        return new FireStationBuilder()
-                .withId(fireStationEntity.getStation())
+        return new FireStationBuilder(fireStationEntity.getStation())
+                //.withId(fireStationEntity.getStation())
                 .withAddress(fireStationEntity.getAddress())
                 .build();
 

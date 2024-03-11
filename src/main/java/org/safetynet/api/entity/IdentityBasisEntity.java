@@ -8,13 +8,12 @@ import lombok.Data;
 import java.util.Date;
 @Data
 @AllArgsConstructor
-public abstract class IdentityBasisEntity {
+public abstract class IdentityBasisEntity extends BasisEntity{
 
-    public String id;
     public String firstName;
     public String lastName;
     public Date birthDate;
-    public String address;
+
     public IdentityBasisEntity(){}
 
 

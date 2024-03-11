@@ -3,7 +3,7 @@ package org.safetynet.api.entity;
 import lombok.Data;
 
 @Data
-public class FireStationEntity extends IdentityBasisEntity {
+public class FireStationEntity extends BasisEntity {
     private String station;
     //private String address;
 

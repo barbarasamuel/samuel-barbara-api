@@ -2,6 +2,7 @@ package org.safetynet.api.service;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.safetynet.api.entity.FireStationEntity;
 import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.mappers.PersonMapper;
 import org.safetynet.api.model.Person;
@@ -12,10 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -30,6 +32,9 @@ public class PersonService {
     @Autowired
     private PersonMapper personMapper;
 
+    public List<Person> findAll(){
+        return personMapper.convertToDtoList(personRepository.getFindAll());
+    }
 
     public Person postPerson(Person addedPerson){
 
@@ -54,49 +59,78 @@ public class PersonService {
         return updatedPerson;
     }
 
-    public Iterable<PersonEntity>getListPersonWithStationNumber(String station) throws Exception {
-
-            List<PersonEntity> dataPerson = personRepository.getAllWithStationNumber(station);
-            log.info("getListPersonWithStationNumber method ok");
-            return dataPerson;
-
+    public List<Person> getListPersonWithStationNumber(String station) {
+            FireStationEntity fireStation = fireStationRepository.findById(station).orElse(null);
+            if(fireStation!=null){
+                List<PersonEntity> dataPerson = personRepository.getAllPersonsByStationNumber(fireStation);
+                log.info("getListPersonWithStationNumber method ok");
+                return personMapper.convertToDtoList(dataPerson);
+            }
+            return List.of();
     }
 
 
-    public Iterable<PersonEntity>getListChildren18orless(String address, Date birthDate) throws Exception {
-
+    /*public List<Person> getListChildren18orless(String address, Date birthDate) throws Exception {
         List<PersonEntity> dataChildren = personRepository.getAllByAddressAndBirthDate(address,birthDate);
+        return personMapper.convertToDtoList(dataChildren);
+    }*/
+    public Hashtable<String, List<Person>> getListChildren18orless(String address, Date birthDate) throws Exception {
+        List<PersonEntity> dataChildren = personRepository.getAllByAddressAndBirthDate(address,birthDate);
+        List<Person> personsList = personMapper.convertToDtoList(dataChildren);
+        Hashtable<String, List<Person>> personsTable= new Hashtable<String,List<Person>>();
+        Date todayDate = new Date();
+        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String sTodayDate = formatter.format(todayDate);
+        DateFormat formatterInDate = new SimpleDateFormat("dd/MM/yyyy");
+        Date formattedDate = formatterInDate.parse(sTodayDate);
 
-        return dataChildren;
+
+        for (Person cursePerson : personsList
+             ) {
+
+            List<PersonEntity> childrenFamily = personRepository.getChildrenFamily(cursePerson.getFirstName(),cursePerson.getLastName(), address, cursePerson.getZip());
+            List<Person> personsFamilyList = personMapper.convertToDtoList(childrenFamily);
+
+            long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
+            double yearsNumber = ageCalcul / 3.15576e+10;
+            int age = (int) Math.floor(yearsNumber);
+
+            personsTable.put(cursePerson.getFirstName()+" "+cursePerson.getLastName()+ " " + age + " ans", personsFamilyList);
+        }
+
+
+        return personsTable;
     }
 
-    public Iterable<PersonEntity> getListPhoneNumber(String station) {
-        List<PersonEntity> dataPhoneNumber = personRepository.getAllPhoneNumberByStation(station);
+    public Hashtable<String, String> getListPhoneNumber(String stationNumber) {
+        List<PersonEntity> dataPhoneNumber = personRepository.getAllPhoneNumberByStation(stationNumber);
+        List<Person> personsList = personMapper.convertToDtoList(dataPhoneNumber);
+        Hashtable<String, String> phonesTable= new Hashtable<String,String>();
+        for (Person cursePerson : personsList
+        ) {
+            phonesTable.put(cursePerson.getFirstName()+" "+cursePerson.getLastName(), cursePerson.getPhone());
+        }
 
-        return dataPhoneNumber;
+        return phonesTable;
     }
 
-    public Iterable<PersonEntity> getListPersonsLivingTo(String address) {
+    public List<Person> getListPersonsLivingTo(String address) {
         List<PersonEntity> dataPersonsLivingTo = personRepository.getAllLivingTo(address);
-
-        return dataPersonsLivingTo;
+        return personMapper.convertToDtoList(dataPersonsLivingTo);
     }
 
-    public Iterable<PersonEntity> getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
+    public List<Person> getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
         List<PersonEntity> dataPersonsCorrespondentToStationNumbers = personRepository.getAllCorrespondentToStationNumbers(stationNumbers);
-
-        return dataPersonsCorrespondentToStationNumbers;
+        return personMapper.convertToDtoList(dataPersonsCorrespondentToStationNumbers);
     }
 
-    public Iterable<PersonEntity> getListPersonsNaming(String firstName,String lastName) throws Exception {
+    public List<Person> getListPersonsNaming(String firstName,String lastName) throws Exception {
         List<PersonEntity> dataPersonsNaming = personRepository.getAllNaming(firstName,lastName);
-
-        return dataPersonsNaming;
+        return personMapper.convertToDtoList(dataPersonsNaming);
     }
 
-    public Iterable<PersonEntity> getAddressMailsListToCity(String city) throws Exception {
+    public List<Person> getAddressMailsListToCity(String city) throws Exception {
         List<PersonEntity> dataCityAddressMails = personRepository.getAllAddressMailsListToCity(city);
-
-        return dataCityAddressMails;
+        return personMapper.convertToDtoList(dataCityAddressMails);
     }
 }
