@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FireStationMapper {
     public FireStationEntity convertToFireStationEntity(FireStation fireStation){
-        return new FireStationEntityBuilder(fireStation.getStation())
-                //.withId(fireStation.getStation())
+        return new FireStationEntityBuilder()
+                .withId(fireStation.getStation())
                 .withAddress(fireStation.getAddress())
                 .build();
     }

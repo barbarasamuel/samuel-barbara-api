@@ -45,12 +45,12 @@ public class JSONReader {
                     String address = fireStationNode.get("address").asText();
 
                     //FireStationEntity fireStation = new FireStationEntity(station, address);;
-                    FireStationEntity fireStation = new FireStationEntityBuilder(station)
-                            //.withId(station)
+                    FireStationEntity fireStation = new FireStationEntityBuilder()
+                            .withId(station)
                             .withAddress(address)
                             .build();
                     fireStations.add(fireStation);
-                    System.out.println(fireStation.getAddress()+ " " +fireStation.getStation());
+                    System.out.println(fireStation.getAddress()+ " " +fireStation.getId());
                     //fireStations.put(fireStation.getStation(),fireStation.getAddress());
                 }
             }
@@ -144,18 +144,20 @@ public class JSONReader {
                         String email = personNode.get("email").asText();
                         String station = null;
                         Date birthDate = null;
-                        String idMedicalRecord = null;
+                        String medicalRecordFirstName = null;
+                        String medicalRecordLastName = null;
 
                         for (FireStationEntity fireStation : fireStationList) {
-                            if(Objects.equals(fireStation.getAddress(), address) && fireStation.getStation()!=null) {
-                                station = fireStation.getStation();
+                            if(Objects.equals(fireStation.getAddress(), address)) {
+                                station = fireStation.getId();
                                 break;
                             }
                         }
 
                         for (MedicalRecordEntity medicalRecord : medicalRecordList) {
                             if(Objects.equals(medicalRecord.getId(), (firstName+lastName))) {
-                                idMedicalRecord = medicalRecord.getId();
+                                medicalRecordFirstName = medicalRecord.getFirstName();
+                                medicalRecordLastName = medicalRecord.getLastName();
                                 birthDate = medicalRecord.getBirthDate();
                                 break;
                             }
@@ -172,7 +174,7 @@ public class JSONReader {
                                 .withZip(zip)
                                 .withBirthDateDate(birthDate)
                                 .withFireStation(station)
-                                .withMedicalRecord(firstName,lastName)
+                                .withMedicalRecord(medicalRecordFirstName,medicalRecordLastName)
                                 .build();
                         persons.add(person);
                     }

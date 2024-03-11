@@ -8,21 +8,20 @@ public class FireStationEntityBuilder {
     private String address;
 
 
-    /*public FireStationEntityBuilder withId(String station){
+    public FireStationEntityBuilder withId(String station){
         this.id = station;
         return this;
-    }*/
-
+    }
+/*
     public FireStationEntityBuilder (String station){
         this.id = station;
-    }
+    }*/
     public FireStationEntityBuilder withAddress(String address){
         this.address = address;
         return this;
     }
 
     public FireStationEntity build(){
-        FireStationEntity fireStationEntity = new FireStationEntity(this.id,this.address);
-        return fireStationEntity;
+        return new FireStationEntity(this.id, this.address);
     }
 }
