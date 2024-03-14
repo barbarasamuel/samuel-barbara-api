@@ -13,7 +13,7 @@ public class MedicalRecordService {
     MedicalRecordMapper medicalRecordMapper;
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
-    public MedicalRecord postMedicalRecord(MedicalRecord addedMedicalRecord){
+   /* public MedicalRecord postMedicalRecord(MedicalRecord addedMedicalRecord){
         MedicalRecordEntity medicalRecordEntity = medicalRecordMapper.convertToMedicalRecordEntity(addedMedicalRecord);
         MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.postElement(medicalRecordEntity);
         MedicalRecord createdMedicalRecord = medicalRecordMapper.convertToMedicalRecord(dataMedicalRecord);
@@ -31,5 +31,5 @@ public class MedicalRecordService {
         MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.deleteElement(id);
         MedicalRecord deletedMedicalRecord = medicalRecordMapper.convertToMedicalRecord(dataMedicalRecord);
         return deletedMedicalRecord;
-    }
+    }*/
 }

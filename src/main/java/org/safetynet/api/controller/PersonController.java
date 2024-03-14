@@ -1,29 +1,20 @@
 package org.safetynet.api.controller;
 
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.safetynet.api.entity.PersonEntity;
+import org.safetynet.api.model.MedicalRecord;
 import org.safetynet.api.model.Person;
 import org.safetynet.api.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
+
 @Slf4j
 @RestController()
 public class PersonController
@@ -31,15 +22,16 @@ public class PersonController
     @Autowired
     private PersonService personService;
 
-    @GetMapping(value="/persons?firestation={station_number}", produces = {"application/json"})
-    public ResponseEntity findAll(@RequestParam("station_number") String stationNumber) {
-        List<Person> allPerson;
-        if(stationNumber!=null && !stationNumber.isEmpty()){
-            allPerson = personService.getListPersonWithStationNumber(stationNumber);
+    @GetMapping(value="/firestation", produces = {"application/json"})
+    public ResponseEntity<MappingJacksonValue> findAll(@RequestParam("station_number") String stationNumber) throws ParseException {
+
+        MappingJacksonValue personResponse = null;
+        if((stationNumber!=null) && (!stationNumber.isEmpty())){
+            personResponse = personService.getListPersonWithStationNumber(stationNumber);
         }
-        else allPerson = personService.findAll();
+
         log.info("personService.postPerson with success");
-        return new ResponseEntity<>(allPerson, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(personResponse);
     }
 
     @PostMapping(value="/persons", produces = {"application/json"}, consumes = {"application/json"})
@@ -49,7 +41,7 @@ public class PersonController
         return new ResponseEntity<>(addedPerson, HttpStatus.CREATED);
     }
 
-    @PatchMapping(value="/persons/{id}", produces = {"application/json"}, consumes = {"application/json"})
+    /*@PatchMapping(value="/persons/{id}", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity patchPerson(@PathVariable("id") String id, @RequestBody Person person) throws Exception {
         Person updatedPerson = personService.patchPerson(id,person);
         log.info("personService.patchPerson with success");
@@ -61,7 +53,7 @@ public class PersonController
         Person deletedPerson = personService.deletePerson(id);
         log.info("personService.deletePerson with success");
         return new ResponseEntity<>(deletedPerson, HttpStatus.OK);
-    }
+    }*/
 
     //TODO: j'ai changé l'url vous ne pouvez pas utiliser "firestation/id" alors que dans FIrestationConroller vous faite la meme chose
     // le probleme c'est que c'est la meme url que le get persons mais il s'agit d'un filtre
@@ -107,15 +99,19 @@ public class PersonController
     }
     //@GetMapping(value="/phoneAlert?firestation={firestation_number}", produces = {"application/json"})
     @GetMapping(value="/phoneAlert", produces = {"application/json"})
-    public ResponseEntity<Hashtable<String, String>> getListPhoneNumber(@RequestParam("firestation") String firestation_number) throws Exception {
-        Hashtable<String, String> phonesList = personService.getListPhoneNumber(firestation_number);
+    public ResponseEntity<MappingJacksonValue> getListPhoneNumber(@RequestParam("firestation") String firestation_number) throws Exception {
+        MappingJacksonValue phonesList = personService.getListPhoneNumber(firestation_number);
+
         return ResponseEntity.status(HttpStatus.OK).body(phonesList);
     }
 
-    @GetMapping(value="/fire?address={address}", produces = {"application/json"})
-    public ResponseEntity<List<Person>> getListPersonsLivingTo(@RequestParam("address") String address) throws Exception {
-        List<Person> persons = personService.getListPersonsLivingTo(address);
-        return ResponseEntity.status(HttpStatus.OK).body(persons);
+    @GetMapping(value="/fire", produces = {"application/json"})
+    //public ResponseEntity<Hashtable<String, MedicalRecord>> getListPersonsLivingTo(@RequestBody("address") String address) throws Exception {
+    public ResponseEntity<Hashtable<String, MedicalRecord>> getListPersonsLivingTo(@RequestParam("address") String address ) throws Exception {
+        Hashtable<String, MedicalRecord> persons = personService.getListPersonsLivingTo(address);
+        return new ResponseEntity<Hashtable<String, MedicalRecord>>(persons,HttpStatus.OK);
+        //return ResponseEntity.ok(persons);
+        //return ResponseEntity.status(HttpStatus.OK).body(persons);
     }
 
     @GetMapping(value="/flood?stations={station_numbers}", produces = {"application/json"})

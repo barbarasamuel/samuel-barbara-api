@@ -5,6 +5,7 @@ import org.safetynet.api.model.MedicalRecord;
 
 
 import java.util.Date;
+import java.util.List;
 
 public class MedicalRecordBuilder {
     public String id;
@@ -12,9 +13,9 @@ public class MedicalRecordBuilder {
     public String lastName;
 
     public Date birthDate;
-    private String medications;
+    private List<String> medications;
 
-    private String allergies;
+    private List<String> allergies;
 
     public MedicalRecordBuilder withFirstName(String firstName){
         this.firstName = firstName;
@@ -36,12 +37,12 @@ public class MedicalRecordBuilder {
         return this;
     }
 
-    public MedicalRecordBuilder withMedications(String medications){
+    public MedicalRecordBuilder withMedications(List<String> medications){
         this.medications = medications;
         return this;
     }
 
-    public MedicalRecordBuilder withAllergies(String allergies){
+    public MedicalRecordBuilder withAllergies(List<String> allergies){
         this.allergies = allergies;
         return this;
     }

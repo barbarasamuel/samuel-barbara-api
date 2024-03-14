@@ -16,7 +16,7 @@ public class MedicalRecordController {
 
     @Autowired
     private MedicalRecordService medicalRecordService;
-    @PostMapping(value="/medicalRecord", produces = {"application/json"}, consumes = {"application/json"})
+   /* @PostMapping(value="/medicalRecord", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<MedicalRecord> postMedicalRecord(@RequestBody MedicalRecord medicalRecord) throws Exception {//public List<Person>getListPersonWithStationNumber(){
         try{
             MedicalRecord addedMedicalRecord = medicalRecordService.postMedicalRecord(medicalRecord);
@@ -50,5 +50,5 @@ public class MedicalRecordController {
             log.error("medicalRecordService.deleteMedicalRecord failed",e);
             return new ResponseEntity<>(id, HttpStatus.BAD_REQUEST);
         }
-    }
+    }*/
 }

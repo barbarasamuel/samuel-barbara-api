@@ -26,7 +26,7 @@ public class FireStationController {
         }
     }
 
-    @PatchMapping(value= "/fireStation/{id}", produces = {"application/json"})
+   /* @PatchMapping(value= "/fireStation/{id}", produces = {"application/json"})
     public ResponseEntity patchFireStation(@PathVariable("id") String id, @RequestBody FireStation fireStation) throws Exception {
         try{
             FireStation updatedFireStation = fireStationService.patchFireStation(id,fireStation);
@@ -47,6 +47,6 @@ public class FireStationController {
             log.error("fireStationService.deleteFireStation failed",e);
             return new ResponseEntity<>(id, HttpStatus.BAD_REQUEST);
         }
-    }
+    }*/
 
 }

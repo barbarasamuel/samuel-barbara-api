@@ -1,10 +1,11 @@
 package org.safetynet.api.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
-
+@JsonFilter("filtreDynamiquePerson")
 @Data
 //@AllArgsConstructor
 public class Person extends IdentityBasis {
@@ -12,6 +13,7 @@ public class Person extends IdentityBasis {
     /*private String firstName;
     private String lastName;
     private String address;*/
+    //public String id;
     private String zip;
     private String city;
     private String eMail;

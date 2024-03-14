@@ -20,7 +20,7 @@ public class FireStationService {
         return createdFireStation;
     }
 
-    public FireStation patchFireStation(String id,FireStation updatedFireStation){
+    /*public FireStation patchFireStation(String id,FireStation updatedFireStation){
         FireStationEntity fireStationEntity = fireStationMapper.convertToFireStationEntity(updatedFireStation);
         FireStationEntity dataFireStation = fireStationRepository.patchElement(id,fireStationEntity);
         updatedFireStation = fireStationMapper.convertToFireStation(dataFireStation);
@@ -32,5 +32,5 @@ public class FireStationService {
         FireStationEntity dataFireStation = fireStationRepository.deleteElement(id);
         FireStation deletedFireStation = fireStationMapper.convertToFireStation(dataFireStation);
         return deletedFireStation;
-    }
+    }*/
 }

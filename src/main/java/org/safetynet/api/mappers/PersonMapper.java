@@ -40,8 +40,8 @@ public class PersonMapper {
                 .withCity(personEntity.getCity())
                 .withZip(personEntity.getZip())
                 .withBirthDateDate(personEntity.getBirthDate())
-                .withFireStation("")
-                .withMedicalRecord("","")
+                .withFireStation(personEntity.getIdFireStation())
+                .withMedicalRecord(personEntity.getFirstName(),personEntity.getLastName())
                 .build();
     }
 

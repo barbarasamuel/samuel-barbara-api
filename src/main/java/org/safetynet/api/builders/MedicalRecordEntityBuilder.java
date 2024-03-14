@@ -4,6 +4,7 @@ import org.safetynet.api.entity.MedicalRecordEntity;
 
 
 import java.util.Date;
+import java.util.List;
 
 public class MedicalRecordEntityBuilder {
     public String id;
@@ -11,9 +12,9 @@ public class MedicalRecordEntityBuilder {
     public String lastName;
 
     public Date birthDate;
-    private String medications;
+    private List<String> medications;
 
-    private String allergies;
+    private List<String> allergies;
 
     public MedicalRecordEntityBuilder withFirstName(String firstName){
         this.firstName = firstName;
@@ -35,12 +36,12 @@ public class MedicalRecordEntityBuilder {
         return this;
     }
 
-    public MedicalRecordEntityBuilder withMedications(String medications){
+    public MedicalRecordEntityBuilder withMedications(List<String> medications){
         this.medications = medications;
         return this;
     }
 
-    public MedicalRecordEntityBuilder withAllergies(String allergies){
+    public MedicalRecordEntityBuilder withAllergies(List<String> allergies){
         this.allergies = allergies;
         return this;
     }

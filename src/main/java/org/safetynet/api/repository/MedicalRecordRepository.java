@@ -3,6 +3,7 @@ package org.safetynet.api.repository;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.entity.MedicalRecordEntity;
+import org.safetynet.api.model.MedicalRecord;
 import org.safetynet.api.tools.JSONReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +18,7 @@ public class MedicalRecordRepository extends GenericRepository<MedicalRecordEnti
 
     @Autowired
     private JSONReader jsonReader;
-    //@PostConstruct
+    @PostConstruct
     public void loadData() throws IOException {
         try{
             this.data = jsonReader.loadMedicalRecords();
@@ -25,5 +26,10 @@ public class MedicalRecordRepository extends GenericRepository<MedicalRecordEnti
         }catch(IOException e){
             log.error("loadMedicalRecords failed");
         }
+    }
+
+    public List<MedicalRecordEntity> getMedicationsAllergies(String firstName,String lastName){
+        return this.data.stream().filter(e -> e.getFirstName().equals(firstName) && e.getLastName().equals(lastName)).toList();
+        //return this.data;
     }
 }

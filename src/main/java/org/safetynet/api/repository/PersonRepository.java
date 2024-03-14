@@ -38,11 +38,11 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
        }
    }
 
-    public List<PersonEntity> getAllPersonsByStationNumber(FireStationEntity station) {
+    public List<PersonEntity> getAllPersonsByStationNumber(String station) {
         /*SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");*/
 
-        //return this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
-        return this.data.stream().filter(e -> e.getAddress().equals(station.getAddress())).toList();
+        return this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
+        //return this.data.stream().filter(e -> e.getAddress().equals(station.getAddress())).toList();
     }
 
     public List<PersonEntity> getAllByAddressAndBirthDate(String value, Date birthDate) {

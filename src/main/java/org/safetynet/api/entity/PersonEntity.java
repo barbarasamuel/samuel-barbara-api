@@ -16,7 +16,7 @@ import java.util.Date;
 //@EqualsAndHashCode(callSuper=false)
 public class PersonEntity extends IdentityBasisEntity {
 
-
+    //public String id;
     private String zip;
     private String city;
     private String eMail;

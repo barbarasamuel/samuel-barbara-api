@@ -2,6 +2,7 @@ package org.safetynet.api.tools;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.builders.*;
 import org.safetynet.api.entity.FireStationEntity;
@@ -80,21 +81,40 @@ public class JSONReader {
                     String firstName = medicalRecordNode.get("firstName").asText();
                     String lastName = medicalRecordNode.get("lastName").asText();
                     String birthDateInString = medicalRecordNode.get("birthdate").asText();
-                    String medications = medicalRecordNode.get("medications").asText();
-                    String allergies = medicalRecordNode.get("allergies").asText();
+                    List<String> medicationsList = new ArrayList<>();
+                    ArrayNode medicationsNode = (ArrayNode) medicalRecordNode.get("medications");
+                    List<String> allergiesList = new ArrayList<>();
+                    ArrayNode allergiesNode = (ArrayNode) medicalRecordNode.get("allergies");
+
+                    for (JsonNode curseMedication : medicationsNode
+                         ) {
+                        medicationsList.add(String.valueOf(curseMedication));
+                    }
+
+                    for (JsonNode curseAllergie : allergiesNode
+                    ) {
+                        allergiesList.add(String.valueOf(curseAllergie));
+                    }
 
                     //birthDateInString = birthDateInString.replace("/","-");
                     DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     Date birthDate = formatter.parse(birthDateInString);
-
+                    /**/for (String curseMed: medicationsList
+                         ) {
+                        System.out.println(curseMed);
+                    }
+                    for (String curseAll: allergiesList
+                         ) {
+                        System.out.println(curseAll);
+                    }
                     //MedicalRecordEntity medicalRecord = new MedicalRecordEntity(firstName+lastName,firstName,lastName,birthDate,medications,allergies);;
                     MedicalRecordEntity medicalRecord = new MedicalRecordEntityBuilder()
                             .withId(firstName,lastName)
                             .withFirstName(firstName)
                             .withLastName(lastName)
                             .withBirthDateDate(birthDate)
-                            .withMedications(medications)
-                            .withAllergies(allergies)
+                            .withMedications(medicationsList)
+                            .withAllergies(allergiesList)
                             .build();
                     medicalRecords.add(medicalRecord);
                     System.out.println(medicalRecord.getId()+ " " +medicalRecord.getMedications());
