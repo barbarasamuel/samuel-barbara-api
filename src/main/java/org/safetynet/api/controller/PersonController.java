@@ -3,6 +3,7 @@ package org.safetynet.api.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.model.MedicalRecord;
 import org.safetynet.api.model.Person;
+import org.safetynet.api.model.PersonsChildren;
 import org.safetynet.api.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,6 @@ public class PersonController
     @Autowired
     private PersonService personService;
 
-    @GetMapping(value="/firestation", produces = {"application/json"})
-    public ResponseEntity<MappingJacksonValue> findAll(@RequestParam("station_number") String stationNumber) throws ParseException {
-
-        MappingJacksonValue personResponse = null;
-        if((stationNumber!=null) && (!stationNumber.isEmpty())){
-            personResponse = personService.getListPersonWithStationNumber(stationNumber);
-        }
-
-        log.info("personService.postPerson with success");
-        return ResponseEntity.status(HttpStatus.OK).body(personResponse);
-    }
 
     @PostMapping(value="/persons", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity postPerson(@RequestBody Person person) throws Exception {//public List<Person>getListPersonWithStationNumber(){
@@ -65,6 +55,17 @@ public class PersonController
         return ResponseEntity.status(HttpStatus.OK).body(persons);
     }*/
 
+    @GetMapping(value="/firestation", produces = {"application/json"})
+    public ResponseEntity<MappingJacksonValue> findAll(@RequestParam("station_number") String stationNumber) throws ParseException {
+
+        MappingJacksonValue personResponse = null;
+        if((stationNumber!=null) && (!stationNumber.isEmpty())){
+            personResponse = personService.getListPersonWithStationNumber(stationNumber);
+        }
+
+        log.info("personService.postPerson with success");
+        return ResponseEntity.status(HttpStatus.OK).body(personResponse);
+    }
 
 
     /*@GetMapping(value="/childAlert?address={address}&birthdate={birthdate}", produces = {"application/json"})
@@ -88,13 +89,11 @@ public class PersonController
         return ResponseEntity.status(HttpStatus.OK).body(persons);
     }*/
     @GetMapping(value="/childAlert", produces = {"application/json"})
-    public ResponseEntity<Hashtable<String, List<Person>>> getListChildren18orless(@RequestParam("address") String address, @RequestParam("birthdate") String birthDate) throws Exception {
+    public ResponseEntity<MappingJacksonValue> getListChildren18orless(@RequestParam("address") String address, @RequestParam("birthdate") String birthDate) throws Exception {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date formattedDate = formatter.parse(birthDate);
 
-        //List<Person> persons = personService.getListChildren18orless(address, formattedDate);
-        //int childrenNb = persons.size();
-        Hashtable<String, List<Person>> personsListSet = personService.getListChildren18orless(address, formattedDate);
+        MappingJacksonValue personsListSet = personService.getListChildren18orless(address, formattedDate);
         return ResponseEntity.status(HttpStatus.OK).body(personsListSet);
     }
     //@GetMapping(value="/phoneAlert?firestation={firestation_number}", produces = {"application/json"})
@@ -107,11 +106,11 @@ public class PersonController
 
     @GetMapping(value="/fire", produces = {"application/json"})
     //public ResponseEntity<Hashtable<String, MedicalRecord>> getListPersonsLivingTo(@RequestBody("address") String address) throws Exception {
-    public ResponseEntity<Hashtable<String, MedicalRecord>> getListPersonsLivingTo(@RequestParam("address") String address ) throws Exception {
-        Hashtable<String, MedicalRecord> persons = personService.getListPersonsLivingTo(address);
-        return new ResponseEntity<Hashtable<String, MedicalRecord>>(persons,HttpStatus.OK);
+    public ResponseEntity<MappingJacksonValue> getListPersonsLivingTo(@RequestParam("address") String address ) throws Exception {
+        MappingJacksonValue persons = personService.getListPersonsLivingTo(address);
+        //return new ResponseEntity<Hashtable<String, MedicalRecord>>(persons,HttpStatus.OK);
         //return ResponseEntity.ok(persons);
-        //return ResponseEntity.status(HttpStatus.OK).body(persons);
+        return ResponseEntity.status(HttpStatus.OK).body(persons);
     }
 
     @GetMapping(value="/flood?stations={station_numbers}", produces = {"application/json"})

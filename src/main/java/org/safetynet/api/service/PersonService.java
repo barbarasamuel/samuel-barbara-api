@@ -9,9 +9,7 @@ import org.safetynet.api.entity.MedicalRecordEntity;
 import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.mappers.MedicalRecordMapper;
 import org.safetynet.api.mappers.PersonMapper;
-import org.safetynet.api.model.MedicalRecord;
-import org.safetynet.api.model.Person;
-import org.safetynet.api.model.PersonsFireStation;
+import org.safetynet.api.model.*;
 import org.safetynet.api.repository.FireStationRepository;
 import org.safetynet.api.repository.MedicalRecordRepository;
 import org.safetynet.api.repository.PersonRepository;
@@ -112,27 +110,24 @@ public class PersonService {
 
                 log.info("getListPersonWithStationNumber method ok");
                 return personsFiltres;
-                //return new PersonResponse(dataPerson,majorNumber,minorNumber);//personMapper.convertToDtoList(dataPerson);
+
             }else{
                 return null;
             }
     }
 
 
-    /*public List<Person> getListChildren18orless(String address, Date birthDate) throws Exception {
-        List<PersonEntity> dataChildren = personRepository.getAllByAddressAndBirthDate(address,birthDate);
-        return personMapper.convertToDtoList(dataChildren);
-    }*/
-    public Hashtable<String, List<Person>> getListChildren18orless(String address, Date birthDate) throws Exception {
+    public MappingJacksonValue getListChildren18orless(String address, Date birthDate) throws Exception {
         List<PersonEntity> dataChildren = personRepository.getAllByAddressAndBirthDate(address,birthDate);
         List<Person> personsList = personMapper.convertToDtoList(dataChildren);
-        Hashtable<String, List<Person>> personsTable= new Hashtable<String,List<Person>>();
+
         Date todayDate = new Date();
         Format formatter = new SimpleDateFormat("dd/MM/yyyy");
         String sTodayDate = formatter.format(todayDate);
         DateFormat formatterInDate = new SimpleDateFormat("dd/MM/yyyy");
         Date formattedDate = formatterInDate.parse(sTodayDate);
 
+        List<PersonsChildren> childrenList = new ArrayList<PersonsChildren>();
 
         for (Person cursePerson : personsList
              ) {
@@ -143,12 +138,17 @@ public class PersonService {
             long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
             double yearsNumber = ageCalcul / 3.15576e+10;
             int age = (int) Math.floor(yearsNumber);
+            String ageInString = String.valueOf(age)+ " ans";
 
-            personsTable.put(cursePerson.getFirstName()+" "+cursePerson.getLastName()+ " " + age + " ans", personsFamilyList);
+            childrenList.add(new PersonsChildren(cursePerson.getFirstName(),cursePerson.getLastName(),ageInString,personsFamilyList));
         }
 
+        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("firstName","lastName");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
+        MappingJacksonValue childrenFiltres = new MappingJacksonValue(childrenList);
+        childrenFiltres.setFilters(listeDeNosFiltres);
 
-        return personsTable;
+        return childrenFiltres;
     }
 
     public MappingJacksonValue getListPhoneNumber(String stationNumber) {
@@ -163,38 +163,39 @@ public class PersonService {
         return phoneNumbersFiltres;
     }
 
-    public Hashtable<String, MedicalRecord> getListPersonsLivingTo(String address) throws ParseException {
+    public MappingJacksonValue getListPersonsLivingTo(String address) throws ParseException {
         List<PersonEntity> dataPersonsLivingTo = personRepository.getAllLivingTo(address);
-        //return personMapper.convertToDtoList(dataPersonsLivingTo);
         List<Person> personsList = personMapper.convertToDtoList(dataPersonsLivingTo);
-        Hashtable<String, MedicalRecord> personsTable= new Hashtable<String, MedicalRecord>();
+
         Date todayDate = new Date();
         Format formatter = new SimpleDateFormat("dd/MM/yyyy");
         String sTodayDate = formatter.format(todayDate);
         DateFormat formatterInDate = new SimpleDateFormat("dd/MM/yyyy");
         Date formattedDate = formatterInDate.parse(sTodayDate);
 
+        List<PersonsFire> personsLivingToList = new ArrayList<PersonsFire>();
 
         for (Person cursePerson : personsList
         ) {
-            //MedicalRecordEntity medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
+
             Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());//getMedicationsAllergies(cursePerson.getFirstName(),cursePerson.getLastName());//(cursePerson.getFirstName(),cursePerson.getLastName());
             MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
 
             long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
             double yearsNumber = ageCalcul / 3.15576e+10;
             int age = (int) Math.floor(yearsNumber);
+            String ageInString = String.valueOf(age) + " ans";
 
-            /*SimpleBeanPropertyFilter filtreMedicationsAllergies = SimpleBeanPropertyFilter.filterOutAllExcept("firstName","lastName","medications","allergies");
-            FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtreMedicationsAllergies);
-            MappingJacksonValue medicationsAllergiesFiltres = new MappingJacksonValue(medicalRecordPerson);
-            medicationsAllergiesFiltres.setFilters(listeDeNosFiltres);*/
+            personsLivingToList.add(new PersonsFire(cursePerson.getFirstName(),cursePerson.getLastName(),ageInString,medicalRecordPerson));
 
-            personsTable.put(cursePerson.getFirstName()+" "+cursePerson.getLastName()+ " " + age + " ans", medicalRecordPerson);
         }
 
+        SimpleBeanPropertyFilter filtreMedicationsAllergies = SimpleBeanPropertyFilter.filterOutAllExcept("medications","allergies");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtreMedicationsAllergies);
+        MappingJacksonValue medicationsAllergiesFiltres = new MappingJacksonValue(personsLivingToList);
+        medicationsAllergiesFiltres.setFilters(listeDeNosFiltres);
 
-        return personsTable;
+        return medicationsAllergiesFiltres;
     }
 
     public List<Person> getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
