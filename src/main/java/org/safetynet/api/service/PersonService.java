@@ -178,7 +178,7 @@ public class PersonService {
         for (Person cursePerson : personsList
         ) {
 
-            Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());//getMedicationsAllergies(cursePerson.getFirstName(),cursePerson.getLastName());//(cursePerson.getFirstName(),cursePerson.getLastName());
+            Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
             MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
 
             long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
@@ -186,7 +186,7 @@ public class PersonService {
             int age = (int) Math.floor(yearsNumber);
             String ageInString = String.valueOf(age) + " ans";
 
-            personsLivingToList.add(new PersonsFire(cursePerson.getFirstName(),cursePerson.getLastName(),ageInString,medicalRecordPerson));
+            personsLivingToList.add(new PersonsFire(cursePerson.getFirstName(),cursePerson.getLastName(),ageInString,medicalRecordPerson.getMedications(),medicalRecordPerson.getAllergies()));
 
         }
 
@@ -198,14 +198,80 @@ public class PersonService {
         return medicationsAllergiesFiltres;
     }
 
-    public List<Person> getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
+    public MappingJacksonValue getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
         List<PersonEntity> dataPersonsCorrespondentToStationNumbers = personRepository.getAllCorrespondentToStationNumbers(stationNumbers);
-        return personMapper.convertToDtoList(dataPersonsCorrespondentToStationNumbers);
+        //return personMapper.convertToDtoList(dataPersonsCorrespondentToStationNumbers);
+        List<Person> personsList = personMapper.convertToDtoList(dataPersonsCorrespondentToStationNumbers);
+
+        Date todayDate = new Date();
+        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String sTodayDate = formatter.format(todayDate);
+        DateFormat formatterInDate = new SimpleDateFormat("dd/MM/yyyy");
+        Date formattedDate = formatterInDate.parse(sTodayDate);
+
+        //HashMap<Person,MedicalRecord> medicationsAllergiesPersonsTable = new HashMap<Person,MedicalRecord>();
+        List<PersonsFlood> correspondentPersonsList = new ArrayList<PersonsFlood>();
+
+        for (Person cursePerson : personsList
+        ) {
+
+            Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
+            MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
+
+            long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
+            double yearsNumber = ageCalcul / 3.15576e+10;
+            int age = (int) Math.floor(yearsNumber);
+            String ageInString = String.valueOf(age) + " ans";
+
+            //medicationsAllergiesPersonsTable.put(cursePerson,medicalRecordPerson);
+            PersonsFloodSub personsFloodSub = new PersonsFloodSub(cursePerson.getFirstName(),cursePerson.getLastName(),ageInString,cursePerson.getPhone(),medicalRecordPerson.getMedications(),medicalRecordPerson.getAllergies());
+            correspondentPersonsList.add(new PersonsFlood(cursePerson.getAddress(),cursePerson.getZip(),cursePerson.getCity(),personsFloodSub));
+
+        }
+
+        SimpleBeanPropertyFilter filtreMedicationsAllergies = SimpleBeanPropertyFilter.filterOutAllExcept("medications","allergies");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtreMedicationsAllergies);
+        MappingJacksonValue personsCorrespondentToStationNumbersFilter = new MappingJacksonValue(correspondentPersonsList);
+        personsCorrespondentToStationNumbersFilter.setFilters(listeDeNosFiltres);
+
+        return personsCorrespondentToStationNumbersFilter;
     }
 
-    public List<Person> getListPersonsNaming(String firstName,String lastName) throws Exception {
+    public MappingJacksonValue getListPersonsNaming(String firstName,String lastName) throws Exception {
         List<PersonEntity> dataPersonsNaming = personRepository.getAllNaming(firstName,lastName);
-        return personMapper.convertToDtoList(dataPersonsNaming);
+        List<Person> personsList = personMapper.convertToDtoList(dataPersonsNaming);
+        List<PersonsPersonInfo> personInfoList = new ArrayList<PersonsPersonInfo>();
+
+        Date todayDate = new Date();
+        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String sTodayDate = formatter.format(todayDate);
+        DateFormat formatterInDate = new SimpleDateFormat("dd/MM/yyyy");
+        Date formattedDate = formatterInDate.parse(sTodayDate);
+
+        //HashMap<Person,MedicalRecord> medicationsAllergiesPersonsTable = new HashMap<Person,MedicalRecord>();
+
+        for (Person cursePerson : personsList
+        ) {
+
+            Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
+            MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
+
+            long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
+            double yearsNumber = ageCalcul / 3.15576e+10;
+            int age = (int) Math.floor(yearsNumber);
+            String ageInString = String.valueOf(age) + " ans";
+
+            //PersonsFloodSub personsFloodSub = new PersonsFloodSub(ageInString,cursePerson.getPhone(),medicalRecordPerson);
+            personInfoList.add(new PersonsPersonInfo(cursePerson.getFirstName(),cursePerson.getLastName(),cursePerson.getAddress(),cursePerson.getZip(),cursePerson.getCity(),ageInString,cursePerson.getEMail(),medicalRecordPerson.getMedications(),medicalRecordPerson.getAllergies()));
+
+        }
+        SimpleBeanPropertyFilter filtreMedicationsAllergies = SimpleBeanPropertyFilter.filterOutAllExcept("medications","allergies");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtreMedicationsAllergies);
+        MappingJacksonValue personsNamingFilter = new MappingJacksonValue(personInfoList);
+        personsNamingFilter.setFilters(listeDeNosFiltres);
+
+        return personsNamingFilter;
+        //return personMapper.convertToDtoList(dataPersonsNaming);
     }
 
     public List<Person> getAddressMailsListToCity(String city) throws Exception {

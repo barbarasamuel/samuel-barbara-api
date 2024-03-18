@@ -113,15 +113,15 @@ public class PersonController
         return ResponseEntity.status(HttpStatus.OK).body(persons);
     }
 
-    @GetMapping(value="/flood?stations={station_numbers}", produces = {"application/json"})
-    public ResponseEntity<List<Person>> getListPersonsCorrespondentToStationNumbers(@RequestParam("station_numbers") List<String> stationNumbers) throws Exception {
-        List<Person> personsCorrespondentToStationNumbers = personService.getListPersonsCorrespondentToStationNumbers(stationNumbers);
+    @GetMapping(value="/flood", produces = {"application/json"})
+    public ResponseEntity<MappingJacksonValue> getListPersonsCorrespondentToStationNumbers(@RequestParam("station_numbers") List<String> stationNumbers) throws Exception {
+        MappingJacksonValue personsCorrespondentToStationNumbers = personService.getListPersonsCorrespondentToStationNumbers(stationNumbers);
         return ResponseEntity.status(HttpStatus.OK).body(personsCorrespondentToStationNumbers);
     }
 
-    @GetMapping(value="/personInfo?firstName={firstName}&lastName={lastName}", produces = {"application/json"})
-    public ResponseEntity<List<Person>> getListPersonsNaming(@RequestParam("firstName") String firstName, @PathVariable("lastName") String lastName) throws Exception {
-        List<Person> personsNaming = personService.getListPersonsNaming(firstName,lastName);
+    @GetMapping(value="/personInfo", produces = {"application/json"})
+    public ResponseEntity<MappingJacksonValue> getListPersonsNaming(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) throws Exception {
+        MappingJacksonValue personsNaming = personService.getListPersonsNaming(firstName,lastName);
         return ResponseEntity.status(HttpStatus.OK).body(personsNaming);
     }
 

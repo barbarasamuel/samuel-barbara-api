@@ -64,7 +64,16 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
     }
 
     public List<PersonEntity> getAllCorrespondentToStationNumbers(List<String> stationNumbers){
-        return this.data;//.stream().filter(e -> e.getIdFireStation().subSequence(stationNumbers)).toList();
+        /*stationNumbers.stream()
+                .map(String::valueOf)
+                .collect(toList());*/
+
+
+                //.filter(e -> e.getIdFireStation()  || e > 10) stationNumbers)).toList();
+        //return this.data.stream().filter(e -> e.getIdFireStation().subSequence(stationNumbers)).toList();
+        return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumbers.get(0))).toList();
+        //return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumbers.toString())).toList();
+
     }
 
     public List<PersonEntity> getAllNaming(String firstName,String lastName){//} throws Exception {
