@@ -63,7 +63,14 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
         return this.data.stream().filter(e -> e.getAddress().equals(address)).toList();
     }
 
-    public List<PersonEntity> getAllCorrespondentToStationNumbers(List<String> stationNumbers){
+    public List<List<PersonEntity>> getAllCorrespondentToStationNumbers(List<String> stationNumbers){
+
+        List<List<PersonEntity>> personsCorrespondentToStationNumbers = new ArrayList<List<PersonEntity>>();
+        for (String stationInCurse: stationNumbers
+             ) {
+            personsCorrespondentToStationNumbers.add(this.data.stream().filter(e -> e.getIdFireStation().equals(stationInCurse)).toList());
+
+        }
         /*stationNumbers.stream()
                 .map(String::valueOf)
                 .collect(toList());*/
@@ -71,7 +78,8 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
 
                 //.filter(e -> e.getIdFireStation()  || e > 10) stationNumbers)).toList();
         //return this.data.stream().filter(e -> e.getIdFireStation().subSequence(stationNumbers)).toList();
-        return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumbers.get(0))).toList();
+        //return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumbers.get(0))).toList();
+        return personsCorrespondentToStationNumbers;
         //return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumbers.toString())).toList();
 
     }

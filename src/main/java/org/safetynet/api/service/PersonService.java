@@ -199,9 +199,9 @@ public class PersonService {
     }
 
     public MappingJacksonValue getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
-        List<PersonEntity> dataPersonsCorrespondentToStationNumbers = personRepository.getAllCorrespondentToStationNumbers(stationNumbers);
+        List<List<PersonEntity>> dataPersonsCorrespondentToStationNumbers = personRepository.getAllCorrespondentToStationNumbers(stationNumbers);
         //return personMapper.convertToDtoList(dataPersonsCorrespondentToStationNumbers);
-        List<Person> personsList = personMapper.convertToDtoList(dataPersonsCorrespondentToStationNumbers);
+        List<List<Person>> personsList = personMapper.convertToDtoListList(dataPersonsCorrespondentToStationNumbers);
 
         Date todayDate = new Date();
         Format formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -212,21 +212,22 @@ public class PersonService {
         //HashMap<Person,MedicalRecord> medicationsAllergiesPersonsTable = new HashMap<Person,MedicalRecord>();
         List<PersonsFlood> correspondentPersonsList = new ArrayList<PersonsFlood>();
 
-        for (Person cursePerson : personsList
+        for (List<Person> cursePersonList : personsList
         ) {
+            for (Person cursePerson : cursePersonList
+            ) {
+                Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
+                MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
 
-            Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
-            MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
+                long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
+                double yearsNumber = ageCalcul / 3.15576e+10;
+                int age = (int) Math.floor(yearsNumber);
+                String ageInString = String.valueOf(age) + " ans";
 
-            long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
-            double yearsNumber = ageCalcul / 3.15576e+10;
-            int age = (int) Math.floor(yearsNumber);
-            String ageInString = String.valueOf(age) + " ans";
-
-            //medicationsAllergiesPersonsTable.put(cursePerson,medicalRecordPerson);
-            PersonsFloodSub personsFloodSub = new PersonsFloodSub(cursePerson.getFirstName(),cursePerson.getLastName(),ageInString,cursePerson.getPhone(),medicalRecordPerson.getMedications(),medicalRecordPerson.getAllergies());
-            correspondentPersonsList.add(new PersonsFlood(cursePerson.getAddress(),cursePerson.getZip(),cursePerson.getCity(),personsFloodSub));
-
+                //medicationsAllergiesPersonsTable.put(cursePerson,medicalRecordPerson);
+                PersonsFloodSub personsFloodSub = new PersonsFloodSub(cursePerson.getFirstName(), cursePerson.getLastName(), ageInString, cursePerson.getPhone(), medicalRecordPerson.getMedications(), medicalRecordPerson.getAllergies());
+                correspondentPersonsList.add(new PersonsFlood(cursePerson.getAddress(), cursePerson.getZip(), cursePerson.getCity(), personsFloodSub));
+            }
         }
 
         SimpleBeanPropertyFilter filtreMedicationsAllergies = SimpleBeanPropertyFilter.filterOutAllExcept("medications","allergies");
