@@ -274,8 +274,15 @@ public class PersonService {
         //return personMapper.convertToDtoList(dataPersonsNaming);
     }
 
-    public List<Person> getAddressMailsListToCity(String city) throws Exception {
-        List<PersonEntity> dataCityAddressMails = personRepository.getAllAddressMailsListToCity(city);
-        return personMapper.convertToDtoList(dataCityAddressMails);
+    public MappingJacksonValue getEmailsListToCity(String city) throws Exception {
+        List<PersonEntity> dataCityAddressMails = personRepository.getAllEmailsListToCity(city);
+        List<Person> emailsList = personMapper.convertToDtoList(dataCityAddressMails);
+
+        SimpleBeanPropertyFilter filtreMedicationsAllergies = SimpleBeanPropertyFilter.filterOutAllExcept("email");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtreMedicationsAllergies);
+        MappingJacksonValue emailslistFilter = new MappingJacksonValue(emailsList);
+        emailslistFilter.setFilters(listeDeNosFiltres);
+
+        return emailslistFilter;
     }
 }

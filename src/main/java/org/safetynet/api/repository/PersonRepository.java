@@ -80,7 +80,7 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
         return this.data.stream().filter(e -> e.getId().equals(firstName+lastName)).toList();
     }
 
-    public List<PersonEntity> getAllAddressMailsListToCity(String city){
+    public List<PersonEntity> getAllEmailsListToCity(String city){
         return this.data.stream().filter(e -> e.getCity().equals(city)).toList();
     }
 

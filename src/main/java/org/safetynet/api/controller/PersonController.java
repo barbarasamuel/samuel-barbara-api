@@ -125,9 +125,9 @@ public class PersonController
         return ResponseEntity.status(HttpStatus.OK).body(personsNaming);
     }
 
-    @GetMapping(value="/communityEmail?city={city}", produces = {"application/json"})
-    public ResponseEntity<List<Person>> getAddressMailsListToCity(@RequestParam("city") String city) throws Exception {
-        List<Person> cityAddressMails = personService.getAddressMailsListToCity(city);
+    @GetMapping(value="/communityEmail", produces = {"application/json"})
+    public ResponseEntity<MappingJacksonValue> getAddressMailsListToCity(@RequestParam("city") String city) throws Exception {
+        MappingJacksonValue cityAddressMails = personService.getEmailsListToCity(city);
         return ResponseEntity.status(HttpStatus.OK).body(cityAddressMails);
     }
 }
