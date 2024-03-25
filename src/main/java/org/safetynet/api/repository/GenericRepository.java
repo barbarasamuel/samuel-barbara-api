@@ -36,7 +36,7 @@ public abstract class GenericRepository <E extends BasisEntity,I >{
     }
 
     //public List<E> putElement(I id, E element){
-    /*public E patchElement(I id, E element){
+    public E patchElement(I id, E element){
         int index = 0;
         Optional<E> elementById = data.stream().filter(e -> e.getId().equals(id)).findFirst();//renvoie un optional
 
@@ -47,9 +47,9 @@ public abstract class GenericRepository <E extends BasisEntity,I >{
 
         }
         return this.data.get(index);
-    }*/
+    }/**/
 
-    /*public E deleteElement(I id){
+    public E deleteElement(I id){
         int index =0;
         Optional<E> elementById = data.stream().filter(e -> e.getId().equals(id)).findFirst();
 
@@ -61,6 +61,6 @@ public abstract class GenericRepository <E extends BasisEntity,I >{
         return this.data.get(index);
 
 
-    }*/
+    }/**/
 
 }

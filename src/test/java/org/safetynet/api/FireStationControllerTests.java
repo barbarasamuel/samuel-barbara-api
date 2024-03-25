@@ -21,6 +21,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(MockitoJUnitRunner.class)
 public class FireStationControllerTests {
 /*
+mockMvc.perform(patch("/firestations/3")
+  .contentType(MediaType.APPLICATION_JSON_VALUE)
+  .content(objectMapper.writeValueAsString(
+    new FireStation(3, "26 rue des rois")))
+  ).andExpect(status().isOk());
+*/
+
+    /*
 
     @Mock
     FireStationService mockFireStationService;

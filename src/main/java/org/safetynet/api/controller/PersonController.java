@@ -24,23 +24,23 @@ public class PersonController
     private PersonService personService;
 
 
-    @PostMapping(value="/persons", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity postPerson(@RequestBody Person person) throws Exception {//public List<Person>getListPersonWithStationNumber(){
-        Person addedPerson = personService.postPerson(person);
+    @PostMapping(value="/person", produces = {"application/json"}, consumes = {"application/json"})
+    public ResponseEntity<MappingJacksonValue> postPerson(@RequestBody Person person) throws Exception {//public List<Person>getListPersonWithStationNumber(){
+        MappingJacksonValue addedPerson = personService.postPerson(person);
         log.info("personService.postPerson with success");
         return new ResponseEntity<>(addedPerson, HttpStatus.CREATED);
     }
 
     /*@PatchMapping(value="/persons/{id}", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity patchPerson(@PathVariable("id") String id, @RequestBody Person person) throws Exception {
-        Person updatedPerson = personService.patchPerson(id,person);
+    public ResponseEntity<MappingJacksonValue> patchPerson(@PathVariable("id") String id, @RequestBody Person person) throws Exception {
+        MappingJacksonValue updatedPerson = personService.patchPerson(id,person);
         log.info("personService.patchPerson with success");
         return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
     }
 
     @DeleteMapping(value="/persons/{id}", produces = {"application/json"})
-    public ResponseEntity deletePerson(@PathVariable("id") String id) throws Exception {
-        Person deletedPerson = personService.deletePerson(id);
+    public ResponseEntity<MappingJacksonValue> deletePerson(@PathVariable("id") String id) throws Exception {
+        MappingJacksonValue deletedPerson = personService.deletePerson(id);
         log.info("personService.deletePerson with success");
         return new ResponseEntity<>(deletedPerson, HttpStatus.OK);
     }*/

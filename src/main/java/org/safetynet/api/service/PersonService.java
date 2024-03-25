@@ -48,27 +48,44 @@ public class PersonService {
         return personMapper.convertToDtoList(personRepository.getFindAll());
     }
 
-    public Person postPerson(Person addedPerson){
+    public MappingJacksonValue postPerson(Person addedPerson){
 
         PersonEntity personEntity = personMapper.convertToEntity(addedPerson);
         PersonEntity dataPerson = personRepository.postElement(personEntity);
         addedPerson  = personMapper.convertToPerson(dataPerson);
 
-        return addedPerson;
+        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.serializeAllExcept("id","birthDate","idFireStation","idMedicalRecord");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
+        MappingJacksonValue personsFiltres = new MappingJacksonValue(addedPerson);
+        personsFiltres.setFilters(listeDeNosFiltres);
+
+        return personsFiltres;
     }
 /*
-    public Person patchPerson(String id,Person updatedPerson){
+    public MappingJacksonValue patchPerson(String id,Person updatedPerson){
         PersonEntity personEntity = personMapper.convertToEntity(updatedPerson);
         PersonEntity dataPerson = personRepository.patchElement(id,personEntity);
         updatedPerson  = personMapper.convertToPerson(dataPerson);
-        return updatedPerson;
+
+        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.serializeAllExcept("id","birthDate","idFireStation","idMedicalRecord");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
+        MappingJacksonValue personsFiltres = new MappingJacksonValue(updatedPerson);
+        personsFiltres.setFilters(listeDeNosFiltres);
+
+        return personsFiltres;
     }
 
-    public Person deletePerson(String id){
+    public MappingJacksonValue deletePerson(String id){
         //PersonEntity personEntity = personMapper.convertToEntity(updatedPerson);
         PersonEntity dataPerson = personRepository.deleteElement(id);
-        Person updatedPerson  = personMapper.convertToPerson(dataPerson);
-        return updatedPerson;
+        Person deletedPerson  = personMapper.convertToPerson(dataPerson);
+
+        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.serializeAllExcept("id","birthDate","idFireStation","idMedicalRecord");
+        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
+        MappingJacksonValue personsFiltres = new MappingJacksonValue(deletedPerson);
+        personsFiltres.setFilters(listeDeNosFiltres);
+
+        return personsFiltres;
     }*/
 
     public MappingJacksonValue getListPersonWithStationNumber(String station) throws ParseException {
