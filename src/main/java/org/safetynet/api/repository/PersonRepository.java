@@ -2,26 +2,26 @@ package org.safetynet.api.repository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.safetynet.api.entity.FireStationEntity;
+//import org.safetynet.api.entity.FireStationEntity;
 import org.safetynet.api.entity.PersonEntity;
-import org.safetynet.api.model.Person;
+//import org.safetynet.api.model.Person;
 import org.safetynet.api.tools.JSONReader;
-import org.slf4j.Logger;
+//import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+//import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
 
-import java.time.Instant;
-import java.time.LocalDate;
+//import java.time.Instant;
+//import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+//import static java.util.stream.Collectors.toList;
 @Slf4j
 @Repository
 public class PersonRepository extends GenericRepository<PersonEntity,String> {
@@ -39,22 +39,20 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
    }
 
     public List<PersonEntity> getAllPersonsByStationNumber(String station) {
-        /*SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");*/
 
         return this.data.stream().filter(e -> e.getIdFireStation().equals(station)).toList();
-        //return this.data.stream().filter(e -> e.getAddress().equals(station.getAddress())).toList();
+
     }
 
     public List<PersonEntity> getAllByAddressAndBirthDate(String value, Date birthDate) {
         return this.data.stream().filter(e -> e.getBirthDate().after(birthDate) && e.getAddress().equals(value)).toList();
-        
-        //return this.data.stream().filter(e -> e.getBirthDate().isAfter(LocalDate.of(2012,2,17)) && e.getAddress().equals(value)).toList();
 
     }
 
     public List<PersonEntity> getChildrenFamily(String firstName, String lastName, String address, String zip){
         return this.data.stream().filter(e -> e.getLastName().equals(lastName) && e.getAddress().equals(address) && e.getZip().equals(zip) && !e.getFirstName().equals(firstName)).toList();
     }
+
     public List<PersonEntity> getAllPhoneNumberByStation(String stationNumber){
         return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumber)).toList();
     }
@@ -71,16 +69,8 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
             personsCorrespondentToStationNumbers.add(this.data.stream().filter(e -> e.getIdFireStation().equals(stationInCurse)).toList());
 
         }
-        /*stationNumbers.stream()
-                .map(String::valueOf)
-                .collect(toList());*/
 
-
-                //.filter(e -> e.getIdFireStation()  || e > 10) stationNumbers)).toList();
-        //return this.data.stream().filter(e -> e.getIdFireStation().subSequence(stationNumbers)).toList();
-        //return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumbers.get(0))).toList();
         return personsCorrespondentToStationNumbers;
-        //return this.data.stream().filter(e -> e.getIdFireStation().equals(stationNumbers.toString())).toList();
 
     }
 

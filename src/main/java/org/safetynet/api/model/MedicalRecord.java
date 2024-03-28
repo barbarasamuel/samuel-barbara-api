@@ -10,10 +10,7 @@ import java.util.List;
 @JsonFilter("filtreDynamiqueMedicalRecord")
 @Data
 public class MedicalRecord extends IdentityBasis {
-    /*private String firstName;
-    private String lastName;
-    private Date birthdate;*/
-    //public String id;
+
     private List<String> medications;
     private List<String> allergies;
 

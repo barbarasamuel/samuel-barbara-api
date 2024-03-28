@@ -31,6 +31,10 @@ public class MedicalRecordMapper {
 
     public MedicalRecord convertToMedicalRecord(Optional<MedicalRecordEntity> medicalRecordEntity) throws ParseException {
 
+        if (medicalRecordEntity.isEmpty()){
+            return null;
+        }
+
         String firstName = getValue(medicalRecordEntity.map(MedicalRecordEntity::getFirstName));
         String lastName = getValue(medicalRecordEntity.map(MedicalRecordEntity::getLastName));
 
@@ -51,9 +55,4 @@ public class MedicalRecordMapper {
 
     }
 
-    public MedicalRecord convertToDtoMedicalRecord(Optional<MedicalRecordEntity> curseMedicalRecordEntity) throws ParseException {
-
-        return this.convertToMedicalRecord(curseMedicalRecordEntity);
-
-    }
 }

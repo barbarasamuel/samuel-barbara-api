@@ -25,40 +25,42 @@ public class MedicalRecordService {
         MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.postElement(medicalRecordEntity);
         MedicalRecord createdMedicalRecord = medicalRecordMapper.convertToMedicalRecord(Optional.ofNullable(dataMedicalRecord));
 
-       SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("firstName","lastName","birthDate","medications", "allergies");
-       FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtrePersons);
-       MappingJacksonValue medicalRecordsFiltres = new MappingJacksonValue(createdMedicalRecord);
-       medicalRecordsFiltres.setFilters(listeDeNosFiltres);
+       if(createdMedicalRecord!=null) {
+           SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("firstName", "lastName", "birthDate", "medications", "allergies");
+           FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtrePersons);
+           MappingJacksonValue medicalRecordsFiltres = new MappingJacksonValue(createdMedicalRecord);
+           medicalRecordsFiltres.setFilters(listeDeNosFiltres);
 
-        return medicalRecordsFiltres;
+           return medicalRecordsFiltres;
+       }
+
+       return null;
     }
 
 
 
     public MappingJacksonValue  patchMedicalRecord(String id,MedicalRecord updatedMedicalRecord) throws ParseException {
-        MedicalRecordEntity medicalRecordEntity = medicalRecordMapper.convertToMedicalRecordEntity(updatedMedicalRecord);
-        MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.patchElement(id,medicalRecordEntity);
-        //updatedMedicalRecord = medicalRecordMapper.convertToMedicalRecord(Optional.ofNullable(dataMedicalRecord));
-        updatedMedicalRecord = medicalRecordMapper.convertToDtoMedicalRecord(Optional.ofNullable(dataMedicalRecord));
 
-        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("firstName","lastName","birthDate","medications", "allergies");
-        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtrePersons);
-        MappingJacksonValue medicalRecordsFiltres = new MappingJacksonValue(updatedMedicalRecord);
-        medicalRecordsFiltres.setFilters(listeDeNosFiltres);
+        MedicalRecordEntity updatedMedicalRecordEntity = medicalRecordMapper.convertToMedicalRecordEntity(updatedMedicalRecord);
+        MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.patchElement(id,updatedMedicalRecordEntity);
+        updatedMedicalRecord = medicalRecordMapper.convertToMedicalRecord(Optional.ofNullable(dataMedicalRecord));
 
-        return medicalRecordsFiltres;
+        if(updatedMedicalRecord!=null){
+
+            SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("firstName","lastName","birthDate","medications", "allergies");
+            FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtrePersons);
+            MappingJacksonValue medicalRecordsFiltres = new MappingJacksonValue(updatedMedicalRecord);
+            medicalRecordsFiltres.setFilters(listeDeNosFiltres);
+
+            return medicalRecordsFiltres;
+        }
+
+        return null;
     }
-/**/
-    public MappingJacksonValue  deleteMedicalRecord(String id) throws ParseException {
-        MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.deleteElement(id);
-        //MedicalRecord deletedMedicalRecord = medicalRecordMapper.convertToMedicalRecord(dataMedicalRecord);
-        MedicalRecord deletedMedicalRecord = medicalRecordMapper.convertToDtoMedicalRecord(Optional.ofNullable(dataMedicalRecord));
 
-        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("firstName","lastName","birthDate","medications", "allergies");
-        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedicalRecord", filtrePersons);
-        MappingJacksonValue medicalRecordsFiltres = new MappingJacksonValue(deletedMedicalRecord);
-        medicalRecordsFiltres.setFilters(listeDeNosFiltres);
+    public void  deleteMedicalRecord(String id) throws ParseException {
 
-        return medicalRecordsFiltres;
+        medicalRecordRepository.deleteElement(id);
+
     }
 }

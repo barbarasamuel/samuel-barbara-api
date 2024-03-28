@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.extern.slf4j.Slf4j;
+import org.safetynet.api.entity.FireStationEntity;
 import org.safetynet.api.entity.MedicalRecordEntity;
 import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.mappers.MedicalRecordMapper;
@@ -61,32 +62,30 @@ public class PersonService {
 
         return personsFiltres;
     }
-/*
+
     public MappingJacksonValue patchPerson(String id,Person updatedPerson){
         PersonEntity personEntity = personMapper.convertToEntity(updatedPerson);
         PersonEntity dataPerson = personRepository.patchElement(id,personEntity);
         updatedPerson  = personMapper.convertToPerson(dataPerson);
 
-        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.serializeAllExcept("id","birthDate","idFireStation","idMedicalRecord");
-        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
-        MappingJacksonValue personsFiltres = new MappingJacksonValue(updatedPerson);
-        personsFiltres.setFilters(listeDeNosFiltres);
+        if(updatedPerson!=null) {
 
-        return personsFiltres;
+            SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.serializeAllExcept("id", "birthDate", "idFireStation", "idMedicalRecord");
+            FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
+            MappingJacksonValue personsFiltres = new MappingJacksonValue(updatedPerson);
+            personsFiltres.setFilters(listeDeNosFiltres);
+
+            return personsFiltres;
+        }
+        return null;
     }
 
-    public MappingJacksonValue deletePerson(String id){
-        //PersonEntity personEntity = personMapper.convertToEntity(updatedPerson);
-        PersonEntity dataPerson = personRepository.deleteElement(id);
-        Person deletedPerson  = personMapper.convertToPerson(dataPerson);
 
-        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.serializeAllExcept("id","birthDate","idFireStation","idMedicalRecord");
-        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
-        MappingJacksonValue personsFiltres = new MappingJacksonValue(deletedPerson);
-        personsFiltres.setFilters(listeDeNosFiltres);
+    public void deletePerson(String id){
 
-        return personsFiltres;
-    }*/
+        personRepository.deleteElement(id);
+
+    }
 
     public MappingJacksonValue getListPersonWithStationNumber(String station) throws ParseException {
 
@@ -102,7 +101,7 @@ public class PersonService {
                 Date formattedDate = formatterInDate.parse(sTodayDate);
 
                 int minorNumber = 0;
-                int majorNumber = 0;
+                int adultNumber = 0;
 
                 for (Person cursePerson : dataPerson
                 ) {
@@ -112,17 +111,16 @@ public class PersonService {
                     int age = (int) Math.floor(yearsNumber);
 
                     if(age>18){
-                        majorNumber += 1;
+                        adultNumber += 1;
                     }else{
                         minorNumber += 1;
                     }
-                    //sDataPerson.add(cursePerson.getFirstName() + " " + cursePerson.getLastName() + " " + cursePerson.getAddress() + " " + cursePerson.getPhone() );
 
                 }
 
                 SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("firstName","lastName","address","phone");
                 FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", filtrePersons);
-                MappingJacksonValue personsFiltres = new MappingJacksonValue(new PersonsFireStation(dataPerson,majorNumber,minorNumber));
+                MappingJacksonValue personsFiltres = new MappingJacksonValue(new PersonsFireStation(dataPerson,adultNumber,minorNumber));
                 personsFiltres.setFilters(listeDeNosFiltres);
 
                 log.info("getListPersonWithStationNumber method ok");
@@ -196,7 +194,7 @@ public class PersonService {
         ) {
 
             Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
-            MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
+            MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToMedicalRecord(medicalRecordEntity);
 
             long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
             double yearsNumber = ageCalcul / 3.15576e+10;
@@ -217,7 +215,6 @@ public class PersonService {
 
     public MappingJacksonValue getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
         List<List<PersonEntity>> dataPersonsCorrespondentToStationNumbers = personRepository.getAllCorrespondentToStationNumbers(stationNumbers);
-        //return personMapper.convertToDtoList(dataPersonsCorrespondentToStationNumbers);
         List<List<Person>> personsList = personMapper.convertToDtoListList(dataPersonsCorrespondentToStationNumbers);
 
         Date todayDate = new Date();
@@ -234,7 +231,7 @@ public class PersonService {
             for (Person cursePerson : cursePersonList
             ) {
                 Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
-                MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
+                MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToMedicalRecord(medicalRecordEntity);
 
                 long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
                 double yearsNumber = ageCalcul / 3.15576e+10;
@@ -266,20 +263,17 @@ public class PersonService {
         DateFormat formatterInDate = new SimpleDateFormat("dd/MM/yyyy");
         Date formattedDate = formatterInDate.parse(sTodayDate);
 
-        //HashMap<Person,MedicalRecord> medicationsAllergiesPersonsTable = new HashMap<Person,MedicalRecord>();
-
         for (Person cursePerson : personsList
         ) {
 
             Optional<MedicalRecordEntity> medicalRecordEntity = medicalRecordRepository.findById(cursePerson.getIdMedicalRecord());
-            MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToDtoMedicalRecord(medicalRecordEntity);
+            MedicalRecord medicalRecordPerson = medicalRecordMapper.convertToMedicalRecord(medicalRecordEntity);
 
             long ageCalcul = formattedDate.getTime() - cursePerson.getBirthDate().getTime();
             double yearsNumber = ageCalcul / 3.15576e+10;
             int age = (int) Math.floor(yearsNumber);
             String ageInString = String.valueOf(age) + " ans";
 
-            //PersonsFloodSub personsFloodSub = new PersonsFloodSub(ageInString,cursePerson.getPhone(),medicalRecordPerson);
             personInfoList.add(new PersonsPersonInfo(cursePerson.getFirstName(),cursePerson.getLastName(),cursePerson.getAddress(),cursePerson.getZip(),cursePerson.getCity(),ageInString,cursePerson.getEMail(),medicalRecordPerson.getMedications(),medicalRecordPerson.getAllergies()));
 
         }
@@ -289,7 +283,7 @@ public class PersonService {
         personsNamingFilter.setFilters(listeDeNosFiltres);
 
         return personsNamingFilter;
-        //return personMapper.convertToDtoList(dataPersonsNaming);
+
     }
 
     public MappingJacksonValue getEmailsListToCity(String city) throws Exception {

@@ -63,20 +63,18 @@ public class PersonBuilder {
     }
 
     public PersonBuilder withFireStation(String fireStation){
-        //this.fireStation.setStation(fireStation);
+
         this.idFireStation = fireStation;
         return this;
     }
 
     public PersonBuilder withMedicalRecord(String firstName, String lastName){//(String medications, String allergies){
         this.idMedicalRecord = firstName+lastName;
-        /*this.medicalRecord.setMedications(medications);
-        this.medicalRecord.setAllergies(allergies);*/
         return this;
-    }/**/
+    }
 
     public Person build(){
-        //Person person = new Person(this.id,this.firstName,this.lastName,this.address, this.zip,this.city,this.eMail,this.phone,this.birthDate,this.idFireStation,this.idMedicalRecord);
+
         Person person = new Person(this.id,this.firstName,this.lastName,this.address, this.zip,this.city,this.eMail,this.phone,this.birthDate,this.idFireStation,this.idMedicalRecord);
         return person;
     }

@@ -16,10 +16,7 @@ import java.util.List;
 @Data
 public class MedicalRecordEntity extends IdentityBasisEntity{
 
-    //public String id;
-    //@Getter
     private List<String> medications;
-    //@Getter
     private List<String> allergies;
 
     public MedicalRecordEntity(String id, String firstName, String lastName, Date birthdate, List<String> medications, List<String> allergies){

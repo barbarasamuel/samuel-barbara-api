@@ -8,7 +8,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PersonsFireStation {
     private List<Person> persons;
-    private Integer majorsNumber;
-    private Integer minorNumber;
+    private Integer adultsNumber;
+    private Integer minorsNumber;
 
 }

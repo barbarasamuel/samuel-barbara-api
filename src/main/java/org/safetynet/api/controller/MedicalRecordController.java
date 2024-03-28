@@ -22,7 +22,6 @@ public class MedicalRecordController {
 
        MappingJacksonValue addedMedicalRecord = medicalRecordService.postMedicalRecord(medicalRecord);
        log.info("medicalRecordService.postMedicalRecord with success");
-
        return new ResponseEntity<>(addedMedicalRecord, HttpStatus.CREATED);
 
     }
@@ -37,11 +36,11 @@ public class MedicalRecordController {
     }
 
     @DeleteMapping(value="/medicalrecords/{id}", produces = {"application/json"})
-    public ResponseEntity<MappingJacksonValue> patchPerson(@PathVariable("id") String id) throws Exception {
+    public ResponseEntity<Void> patchPerson(@PathVariable("id") String id) throws Exception {
 
-       MappingJacksonValue deletedMedicalRecord = medicalRecordService.deleteMedicalRecord(id);
+       medicalRecordService.deleteMedicalRecord(id);
        log.info("medicalRecordService.deleteMedicalRecord with success");
-       return new ResponseEntity<>(deletedMedicalRecord, HttpStatus.OK);
+       return ResponseEntity.ok().build();
 
     }
 }

@@ -24,8 +24,6 @@ public class PersonMapper {
                 .withBirthDateDate(person.getBirthDate())
                 .withFireStation("")
                 .withMedicalRecord("","")
-                //.withFireStation(person.getFireStation().getStation())//identifiant de FireStation
-                //.withMedicalRecord(person.getMedicalRecord().getFirstName(),person.getMedicalRecord().getLastName())
                 .build();
     }
 

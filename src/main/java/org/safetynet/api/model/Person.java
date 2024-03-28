@@ -9,16 +9,12 @@ import java.util.Date;
 @Data
 //@AllArgsConstructor
 public class Person extends IdentityBasis {
-    //private String id;
-    /*private String firstName;
-    private String lastName;
-    private String address;*/
-    //public String id;
+
     private String zip;
     private String city;
     private String eMail;
     private String phone;
-    //private Date birthDate;
+
     private String idFireStation;
     private String idMedicalRecord;
 

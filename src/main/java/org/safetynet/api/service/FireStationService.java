@@ -43,16 +43,9 @@ public class FireStationService {
         return firestationFiltres;
     }
 
-    public MappingJacksonValue deleteFireStation(String id){
+    public void deleteFireStation(String id){
 
-        FireStationEntity dataFireStation = fireStationRepository.deleteElement(id);
-        FireStation deletedFireStation = fireStationMapper.convertToFireStation(dataFireStation);
+        fireStationRepository.deleteElement(id);
 
-        SimpleBeanPropertyFilter filtrePersons = SimpleBeanPropertyFilter.filterOutAllExcept("address","station");
-        FilterProvider listeDeNosFiltres = new SimpleFilterProvider().addFilter("filtreDynamiqueFireStation", filtrePersons);
-        MappingJacksonValue firestationFiltres = new MappingJacksonValue(deletedFireStation);
-        firestationFiltres.setFilters(listeDeNosFiltres);
-
-        return firestationFiltres;
-    }/**/
+    }
 }

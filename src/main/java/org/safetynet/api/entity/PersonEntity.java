@@ -11,12 +11,9 @@ import org.safetynet.api.model.MedicalRecord;
 import java.util.Date;
 
 @Data
-//@JsonFilter("filtreDynamiquePersonEntity")
 @AllArgsConstructor
-//@EqualsAndHashCode(callSuper=false)
 public class PersonEntity extends IdentityBasisEntity {
 
-    //public String id;
     private String zip;
     private String city;
     private String eMail;

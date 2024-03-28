@@ -27,10 +27,10 @@ public class JSONReader {
 
     @Autowired
     private ResourceLoader resourceLoader;
+    //Pour convertir les données JSON en Objets Java
     public List<FireStationEntity> loadFireStations() throws IOException{
 
         List<FireStationEntity> fireStations = new ArrayList<>();
-        //Map<String,String> fireStations = null;
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -45,14 +45,13 @@ public class JSONReader {
                     String station = fireStationNode.get("station").asText();
                     String address = fireStationNode.get("address").asText();
 
-                    //FireStationEntity fireStation = new FireStationEntity(station, address);;
                     FireStationEntity fireStation = new FireStationEntityBuilder()
                             .withId(station)
                             .withAddress(address)
                             .build();
                     fireStations.add(fireStation);
-                    System.out.println(fireStation.getAddress()+ " " +fireStation.getId());
-                    //fireStations.put(fireStation.getStation(),fireStation.getAddress());
+                    //System.out.println(fireStation.getAddress()+ " " +fireStation.getId());
+
                 }
             }
             log.info("The fireStations list is loaded." + fireStations.size() + " firestations found.");
@@ -65,7 +64,6 @@ public class JSONReader {
     }
     public List<MedicalRecordEntity> loadMedicalRecords() throws IOException {
         List<MedicalRecordEntity> medicalRecords = new ArrayList<>();
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -96,18 +94,17 @@ public class JSONReader {
                         allergiesList.add(String.valueOf(curseAllergie));
                     }
 
-                    //birthDateInString = birthDateInString.replace("/","-");
                     DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     Date birthDate = formatter.parse(birthDateInString);
-                    /**/for (String curseMed: medicationsList
+                    /*for (String curseMed: medicationsList
                          ) {
                         System.out.println(curseMed);
                     }
                     for (String curseAll: allergiesList
                          ) {
                         System.out.println(curseAll);
-                    }
-                    //MedicalRecordEntity medicalRecord = new MedicalRecordEntity(firstName+lastName,firstName,lastName,birthDate,medications,allergies);;
+                    }*/
+
                     MedicalRecordEntity medicalRecord = new MedicalRecordEntityBuilder()
                             .withId(firstName,lastName)
                             .withFirstName(firstName)
@@ -137,10 +134,6 @@ public class JSONReader {
         ObjectMapper objectMapper = new ObjectMapper();
 
         InputStream inputStream;
-        /*String station = "";
-        Date birthDate = new Date();
-        String idMedicalRecord = "";*/
-
 
         try {
             List<FireStationEntity> fireStationList = loadFireStations();
@@ -182,7 +175,7 @@ public class JSONReader {
                                 break;
                             }
                         }
-                        //PersonEntity person = new PersonEntity(firstName+lastName,firstName,lastName,address,zip,city,email,phone,birthDate,station,idMedicalRecord);
+
                         PersonEntity person = new PersonEntityBuilder()
                                 .withId(firstName,lastName)
                                 .withFirstName(firstName)
@@ -204,27 +197,7 @@ public class JSONReader {
         }catch(IOException e){
             log.error("Error loading the persons list.", e);
 
-
         }
         return persons;
     }
-
-    /*@Autowired
-    private ReadService readService;
-    public PersonEntity convertJSONToJava() throws JsonProcessingException, Exception {
-    //Pour convertir données JSON en Objet Java
-        List<PersonEntity> personsList = new ArrayList<PersonEntity>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonPersonsArray = readService.loadFile();
-        personsList = objectMapper.readValue(jsonPersonsArray, new TypeReference<List<PersonEntity>>() {
-        });
-        return (PersonEntity) personsList;
-    }
-    public String convertJavaToJSON(PersonEntity personsList) throws JsonProcessingException{
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonPersonsList = objectMapper.writeValueAsString(personsList);
-        return jsonPersonsList;
-    }*/
-
-
 }

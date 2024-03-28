@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class PersonEntityBuilder {
     public String id;
-    //public String idMedicalRecord;
+
     public String firstName;
     public String lastName;
     public String address;
@@ -65,7 +65,7 @@ public class PersonEntityBuilder {
     }
 
     public PersonEntityBuilder withFireStation(String fireStation){
-        //this.fireStation.setStation(fireStation);
+
         this.idFireStation = fireStation;
         return this;
     }

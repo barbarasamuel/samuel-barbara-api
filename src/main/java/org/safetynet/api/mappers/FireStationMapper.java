@@ -18,7 +18,6 @@ public class FireStationMapper {
     public FireStation convertToFireStation(FireStationEntity fireStationEntity){
 
         return new FireStationBuilder(fireStationEntity.getStation())
-                //.withId(fireStationEntity.getId())
                 .withAddress(fireStationEntity.getAddress())
                 .build();
 

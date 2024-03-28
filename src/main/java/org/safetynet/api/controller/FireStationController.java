@@ -32,11 +32,11 @@ public class FireStationController {
 
     }
     @DeleteMapping("/firestations/{id}")
-    public ResponseEntity<MappingJacksonValue>  deleteFireStation(@PathVariable("id") String id) throws Exception {
-        MappingJacksonValue deletedFireStation = fireStationService.deleteFireStation(id);
+    public ResponseEntity<Void>  deleteFireStation(@PathVariable("id") String id) throws Exception {
+        fireStationService.deleteFireStation(id);
         log.info("fireStationService.deleteFireStation with success");
-        return new ResponseEntity<>(deletedFireStation, HttpStatus.OK);
+        return ResponseEntity.ok().build();
 
-    }/**/
+    }
 
 }
