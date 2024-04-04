@@ -6,6 +6,11 @@ import org.safetynet.api.entity.MedicalRecordEntity;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *
+ * To make easy the instantiation of a MedicalRecordEntity Object
+ *
+ */
 public class MedicalRecordEntityBuilder {
     public String id;
     public String firstName;

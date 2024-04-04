@@ -5,6 +5,11 @@ import org.safetynet.api.entity.PersonEntity;
 
 import java.util.Date;
 
+/**
+ *
+ * To make easy the instantiation of a PersonEntity Object
+ *
+ */
 public class PersonEntityBuilder {
     public String id;
 

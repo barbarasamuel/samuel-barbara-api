@@ -2,26 +2,22 @@ package org.safetynet.api.repository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-//import org.safetynet.api.entity.FireStationEntity;
 import org.safetynet.api.entity.PersonEntity;
-//import org.safetynet.api.model.Person;
 import org.safetynet.api.tools.JSONReader;
-//import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-//import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-
-//import java.time.Instant;
-//import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//import static java.util.stream.Collectors.toList;
+/**
+ *
+ * To get data of the Person element(s)
+ * when a method is reserved to this object type
+ *
+ */
 @Slf4j
 @Repository
 public class PersonRepository extends GenericRepository<PersonEntity,String> {

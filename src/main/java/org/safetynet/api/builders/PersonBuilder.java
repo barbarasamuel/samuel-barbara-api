@@ -3,7 +3,11 @@ package org.safetynet.api.builders;
 import org.safetynet.api.model.Person;
 
 import java.util.Date;
-
+/**
+ *
+ * To make easy the instantiation of a Person Object
+ *
+ */
 public class PersonBuilder {
     public String id;
     public String firstName;

@@ -1,12 +1,7 @@
 package org.safetynet.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.safetynet.api.model.FireStation;
-import org.safetynet.api.model.IdentityBasis;
-import org.safetynet.api.model.MedicalRecord;
 
 import java.util.Date;
 

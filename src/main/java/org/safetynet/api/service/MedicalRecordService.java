@@ -20,6 +20,12 @@ public class MedicalRecordService {
     MedicalRecordMapper medicalRecordMapper;
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
+
+    /**
+     *
+     * To create a MedicalRecord data and can display the result in JSON format
+     *
+     */
    public MappingJacksonValue postMedicalRecord(MedicalRecord addedMedicalRecord) throws ParseException {
         MedicalRecordEntity medicalRecordEntity = medicalRecordMapper.convertToMedicalRecordEntity(addedMedicalRecord);
         MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.postElement(medicalRecordEntity);
@@ -38,7 +44,11 @@ public class MedicalRecordService {
     }
 
 
-
+    /**
+     *
+     * To do a partial updating for a MedicalRecord data and can display result in JSON format
+     *
+     */
     public MappingJacksonValue  patchMedicalRecord(String id,MedicalRecord updatedMedicalRecord) throws ParseException {
 
         MedicalRecordEntity updatedMedicalRecordEntity = medicalRecordMapper.convertToMedicalRecordEntity(updatedMedicalRecord);
@@ -58,6 +68,11 @@ public class MedicalRecordService {
         return null;
     }
 
+    /**
+     *
+     * To delete a MedicalRecord data
+     *
+     */
     public void  deleteMedicalRecord(String id) throws ParseException {
 
         medicalRecordRepository.deleteElement(id);

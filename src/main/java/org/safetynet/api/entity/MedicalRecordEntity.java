@@ -1,18 +1,11 @@
 package org.safetynet.api.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 import java.util.Date;
 import java.util.List;
-//@JsonFilter("filtreDynamiqueMedicalRecord")
-//@NoArgsConstructor
-//@Setter
+
 @Data
 public class MedicalRecordEntity extends IdentityBasisEntity{
 

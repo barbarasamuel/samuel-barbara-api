@@ -7,6 +7,12 @@ import org.safetynet.api.model.MedicalRecord;
 import java.util.Date;
 import java.util.List;
 
+
+/**
+ *
+ * To make easy the instantiation of a MedicalRecord Object
+ *
+ */
 public class MedicalRecordBuilder {
     public String id;
     public String firstName;

@@ -2,7 +2,11 @@ package org.safetynet.api.builders;
 
 import org.safetynet.api.entity.FireStationEntity;
 
-
+/**
+ *
+ * To make easy the instantiation of a FireStationEntity Object
+ *
+ */
 public class FireStationEntityBuilder {
     public String id;
     private String address;

@@ -27,7 +27,13 @@ public class JSONReader {
 
     @Autowired
     private ResourceLoader resourceLoader;
-    //Pour convertir les données JSON en Objets Java
+
+    /**
+     *
+     * To convert the JSON datas in Java Objects
+     *
+     */
+
     public List<FireStationEntity> loadFireStations() throws IOException{
 
         List<FireStationEntity> fireStations = new ArrayList<>();

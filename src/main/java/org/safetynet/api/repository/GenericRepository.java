@@ -1,15 +1,18 @@
 package org.safetynet.api.repository;
 
 import org.safetynet.api.entity.BasisEntity;
-import org.safetynet.api.entity.IdentityBasisEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ *
+ * To manage the Person, MedicalRecord or FireStation element(s)
+ * when a method can be used by the three types of object
+ *
+ */
 public abstract class GenericRepository <E extends BasisEntity,I >{
 
     protected List<E> data = new ArrayList<E>();

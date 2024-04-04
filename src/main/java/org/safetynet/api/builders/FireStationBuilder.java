@@ -2,7 +2,11 @@ package org.safetynet.api.builders;
 
 import org.safetynet.api.model.FireStation;
 
-
+/**
+ *
+ * To make easy the instantiation of a FireStation Object
+ *
+ */
 public class FireStationBuilder {
     public String id;
     private String address;

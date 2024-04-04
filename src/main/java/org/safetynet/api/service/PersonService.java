@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.safetynet.api.entity.FireStationEntity;
 import org.safetynet.api.entity.MedicalRecordEntity;
 import org.safetynet.api.entity.PersonEntity;
 import org.safetynet.api.mappers.MedicalRecordMapper;
@@ -22,8 +21,10 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -49,6 +50,11 @@ public class PersonService {
         return personMapper.convertToDtoList(personRepository.getFindAll());
     }
 
+    /**
+     *
+     * To create a Person data and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue postPerson(Person addedPerson){
 
         PersonEntity personEntity = personMapper.convertToEntity(addedPerson);
@@ -63,6 +69,11 @@ public class PersonService {
         return personsFiltres;
     }
 
+    /**
+     *
+     * To do a partial updating for a Person data and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue patchPerson(String id,Person updatedPerson){
         PersonEntity personEntity = personMapper.convertToEntity(updatedPerson);
         PersonEntity dataPerson = personRepository.patchElement(id,personEntity);
@@ -80,13 +91,24 @@ public class PersonService {
         return null;
     }
 
-
+    /**
+     *
+     * To delete a Person data
+     *
+     */
     public void deletePerson(String id){
 
         personRepository.deleteElement(id);
 
     }
 
+    /**
+     *
+     * To get list of persons with firstname, lastname, address, phone,
+     * counting the number of adults, counting the number of minors
+     * and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue getListPersonWithStationNumber(String station) throws ParseException {
 
             List<PersonEntity> dataPersonEntity = personRepository.getAllPersonsByStationNumber(station);
@@ -131,7 +153,13 @@ public class PersonService {
             }
     }
 
-
+    /**
+     *
+     * To get the list of children living to this address
+     * with their firstname, lastname, age and their family
+     * and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue getListChildren18orless(String address, Date birthDate) throws Exception {
         List<PersonEntity> dataChildren = personRepository.getAllByAddressAndBirthDate(address,birthDate);
         List<Person> personsList = personMapper.convertToDtoList(dataChildren);
@@ -166,6 +194,12 @@ public class PersonService {
         return childrenFiltres;
     }
 
+    /**
+     *
+     * To get the list of telephone numbers of persons served by this station number
+     * and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue getListPhoneNumber(String stationNumber) {
         List<PersonEntity> dataPhoneNumber = personRepository.getAllPhoneNumberByStation(stationNumber);
         List<Person> personsList = personMapper.convertToDtoList(dataPhoneNumber);
@@ -178,6 +212,13 @@ public class PersonService {
         return phoneNumbersFiltres;
     }
 
+    /**
+     *
+     * To get the list of persons living to this address
+     * with thieir lastname, phone number, age and their medical records
+     * and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue getListPersonsLivingTo(String address) throws ParseException {
         List<PersonEntity> dataPersonsLivingTo = personRepository.getAllLivingTo(address);
         List<Person> personsList = personMapper.convertToDtoList(dataPersonsLivingTo);
@@ -213,6 +254,13 @@ public class PersonService {
         return medicationsAllergiesFiltres;
     }
 
+    /**
+     *
+     * To get the lists of persons served by thess station numbers
+     * with their lastname, phone number, age and their medical records
+     * and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue getListPersonsCorrespondentToStationNumbers(List<String> stationNumbers) throws Exception {
         List<List<PersonEntity>> dataPersonsCorrespondentToStationNumbers = personRepository.getAllCorrespondentToStationNumbers(stationNumbers);
         List<List<Person>> personsList = personMapper.convertToDtoListList(dataPersonsCorrespondentToStationNumbers);
@@ -223,7 +271,6 @@ public class PersonService {
         DateFormat formatterInDate = new SimpleDateFormat("dd/MM/yyyy");
         Date formattedDate = formatterInDate.parse(sTodayDate);
 
-        //HashMap<Person,MedicalRecord> medicationsAllergiesPersonsTable = new HashMap<Person,MedicalRecord>();
         List<PersonsFlood> correspondentPersonsList = new ArrayList<PersonsFlood>();
 
         for (List<Person> cursePersonList : personsList
@@ -252,6 +299,13 @@ public class PersonService {
         return personsCorrespondentToStationNumbersFilter;
     }
 
+    /**
+     *
+     * To get the list of persons naming with these firstname and lastname
+     * with their lastname, address, age, email address and their medical records
+     * and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue getListPersonsNaming(String firstName,String lastName) throws Exception {
         List<PersonEntity> dataPersonsNaming = personRepository.getAllNaming(firstName,lastName);
         List<Person> personsList = personMapper.convertToDtoList(dataPersonsNaming);
@@ -286,6 +340,13 @@ public class PersonService {
 
     }
 
+    /**
+     *
+     * To get the lists of persons living in this city
+     * with their lastname, email address
+     * and can display the result in JSON format
+     *
+     */
     public MappingJacksonValue getEmailsListToCity(String city) throws Exception {
         List<PersonEntity> dataCityAddressMails = personRepository.getAllEmailsListToCity(city);
         List<Person> emailsList = personMapper.convertToDtoList(dataCityAddressMails);

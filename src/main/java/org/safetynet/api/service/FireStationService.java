@@ -17,6 +17,12 @@ public class FireStationService {
     FireStationMapper fireStationMapper;
     @Autowired
     FireStationRepository fireStationRepository;
+
+    /**
+     *
+     * To create a FireStation data and can display in JSON format
+     *
+     */
     public MappingJacksonValue postFireStation(FireStation addedFireStation){
         FireStationEntity fireStationEntity = fireStationMapper.convertToFireStationEntity(addedFireStation);
         FireStationEntity dataFireStation = fireStationRepository.postElement(fireStationEntity);
@@ -30,6 +36,11 @@ public class FireStationService {
         return firestationFiltres;
     }
 
+    /**
+     *
+     * To do a partial updating for a FireStation data and can display in JSON format
+     *
+     */
     public MappingJacksonValue patchFireStation(String id,FireStation updatedFireStation){
         FireStationEntity fireStationEntity = fireStationMapper.convertToFireStationEntity(updatedFireStation);
         FireStationEntity dataFireStation = fireStationRepository.patchElement(id,fireStationEntity);
@@ -43,6 +54,11 @@ public class FireStationService {
         return firestationFiltres;
     }
 
+    /**
+     *
+     * To delete a FireStation data
+     *
+     */
     public void deleteFireStation(String id){
 
         fireStationRepository.deleteElement(id);
