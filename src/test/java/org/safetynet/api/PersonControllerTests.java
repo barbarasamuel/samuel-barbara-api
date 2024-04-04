@@ -37,7 +37,7 @@ public class PersonControllerTests {
 
 
     @Test
-    void firestationShouldReturnPersonListInJSON() throws Exception {
+    void firestationShouldReturnPersonListInJSONTest() throws Exception {
 
         this.mockMvc.perform(get("/firestation?station_number=1").accept("application/json")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.adultsNumber").isNumber())
@@ -45,7 +45,7 @@ public class PersonControllerTests {
     }
 
     @Test
-    void childAlertShouldReturnChildrenListInJSON() throws Exception {
+    void childAlertShouldReturnChildrenListInJSONTest() throws Exception {
 
         this.mockMvc.perform(get("/childAlert?address=1509 Culver St&birthdate=17/02/2012").accept("application/json")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].firstName").value("Tenley"))
@@ -53,7 +53,7 @@ public class PersonControllerTests {
     }
 
     @Test
-    void phoneAlertShouldReturnPhonesListInJSON() throws Exception {
+    void phoneAlertShouldReturnPhonesListInJSONTest() throws Exception {
 
         this.mockMvc.perform(get("/phoneAlert?firestation=3").accept("application/json")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].firstName").value("John"))
@@ -62,14 +62,14 @@ public class PersonControllerTests {
     }
 
     @Test
-    void fireShouldReturnPersonLivingToInJSON() throws Exception {
+    void fireShouldReturnPersonLivingToInJSONTest() throws Exception {
 
         this.mockMvc.perform(get("/fire?address=112 Steppes Pl").accept("application/json")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].medications[0]").value("\"hydrapermazol:300mg\""));
     }
 
     @Test
-    void floodShouldReturnPersonsByHomeInJSON() throws Exception {
+    void floodShouldReturnPersonsByHomeInJSONTest() throws Exception {
 
         this.mockMvc.perform(get("/flood?station_numbers=2").accept("application/json")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].address").value("29 15th St"))
@@ -81,21 +81,21 @@ public class PersonControllerTests {
     }
 
     @Test
-    void personInfoShouldReturnPersonDetailsInJSON() throws Exception {
+    void personInfoShouldReturnPersonDetailsInJSONTest() throws Exception {
 
         this.mockMvc.perform(get("/personInfo?firstName=Tony&lastName=Cooper").accept("application/json")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].allergies[0]").value("\"shellfish\""))
                 .andExpect(jsonPath("$.[0].email").value("tcoop@ymail.com"));
     }
     @Test
-    void communityEmailShouldReturnEmailsListInJSON() throws Exception {
+    void communityEmailShouldReturnEmailsListInJSONTest() throws Exception {
 
         this.mockMvc.perform(get("/communityEmail?city=Culver").accept("application/json")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.[6].email").value("tenz@email.com"));
     }
 
     @Test
-    public void testPostPerson() throws Exception {
+    public void postPersonTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String,Object> body = new HashMap<>();
@@ -116,7 +116,7 @@ public class PersonControllerTests {
     }
 
     @Test
-    public void testPatchPerson() throws Exception {
+    public void patchPersonTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String,Object> body = new HashMap<>();
@@ -138,7 +138,7 @@ public class PersonControllerTests {
     }
 
     @Test
-    public void testDeletePerson() throws Exception {
+    public void deletePersonTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/persons/JohnBoyd")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

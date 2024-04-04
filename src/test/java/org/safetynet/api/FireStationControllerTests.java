@@ -27,7 +27,7 @@ public class FireStationControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void testPostFireStation() throws Exception {
+    public void postFireStationTest() throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -44,7 +44,7 @@ public class FireStationControllerTests {
     }
 
     @Test
-    public void testPatchFireStation() throws Exception {
+    public void patchFireStationTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String,Object> body = new HashMap<>();
@@ -62,7 +62,7 @@ public class FireStationControllerTests {
     }
 
     @Test
-    public void testDeleteFireStation() throws Exception {
+    public void deleteFireStationTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/firestations/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

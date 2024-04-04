@@ -29,7 +29,7 @@ public class MedicalRecordControllerTests {
 
 
     @Test
-    public void testPostMedicalRecord() throws Exception {
+    public void postMedicalRecordTest() throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -49,7 +49,7 @@ public class MedicalRecordControllerTests {
     }
 
     @Test
-    public void testPatchMedicalRecord() throws Exception {
+    public void patchMedicalRecordTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String,Object> body = new HashMap<>();
@@ -69,7 +69,7 @@ public class MedicalRecordControllerTests {
     }
 
     @Test
-    public void testDeleteMedicalRecord() throws Exception {
+    public void deleteMedicalRecordTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/medicalrecords/JohnBoyd")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
