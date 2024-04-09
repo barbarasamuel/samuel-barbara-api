@@ -8,6 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+
+/**
+ *
+ * To get the informations in the FireStationEntity Objects
+ *
+ */
+
 @Slf4j
 @Repository
 public class FireStationRepository extends GenericRepository <FireStationEntity,String>{

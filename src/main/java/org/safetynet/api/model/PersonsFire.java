@@ -5,6 +5,12 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ *
+ * DTO design pattern to collect the informations about PersonFire
+ *
+ */
+
 @Getter
 @AllArgsConstructor
 public class PersonsFire {

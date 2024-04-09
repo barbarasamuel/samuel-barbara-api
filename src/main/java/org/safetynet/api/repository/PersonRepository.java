@@ -14,10 +14,12 @@ import java.util.List;
 
 /**
  *
- * To get data of the Person element(s)
+ * To load the information in the PersonEntity Objects
+ * and to get data of the PersonEntity element(s)
  * when a method is reserved to this object type
  *
  */
+
 @Slf4j
 @Repository
 public class PersonRepository extends GenericRepository<PersonEntity,String> {
@@ -41,7 +43,7 @@ public class PersonRepository extends GenericRepository<PersonEntity,String> {
     }
 
     public List<PersonEntity> getAllByAddressAndBirthDate(String value, Date birthDate) {
-        return this.data.stream().filter(e -> e.getBirthDate().after(birthDate) && e.getAddress().equals(value)).toList();
+        return this.data.stream().filter(e -> e.getBirthDate()!=null && e.getBirthDate().after(birthDate) && e.getAddress().equals(value)).toList();
 
     }
 

@@ -8,6 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+
+/**
+ *
+ * To load the information in the MedicalRecordEntity Objects
+ *
+ */
+
 @Slf4j
 @Repository
 public class MedicalRecordRepository extends GenericRepository<MedicalRecordEntity,String>{

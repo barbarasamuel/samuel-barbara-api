@@ -9,6 +9,12 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * To map from PersonEntity type to Person type or inverse
+ *
+ */
+
 @Component
 public class PersonMapper {
     public PersonEntity convertToEntity(Person person){

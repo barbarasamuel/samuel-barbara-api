@@ -215,7 +215,7 @@ public class PersonService {
     /**
      *
      * To get the list of persons living to this address
-     * with thieir lastname, phone number, age and their medical records
+     * with their lastname, phone number, age and their medical records
      * and can display the result in JSON format
      *
      */
@@ -256,7 +256,7 @@ public class PersonService {
 
     /**
      *
-     * To get the lists of persons served by thess station numbers
+     * To get the lists of persons served by theses station numbers
      * with their lastname, phone number, age and their medical records
      * and can display the result in JSON format
      *

@@ -2,6 +2,12 @@ package org.safetynet.api.entity;
 
 import lombok.Data;
 
+/**
+ *
+ * To get the JSON data about firestations
+ *
+ */
+
 @Data
 public class FireStationEntity extends BasisEntity {
 

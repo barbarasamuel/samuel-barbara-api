@@ -1,5 +1,12 @@
 package org.safetynet.api.model;
 
+/**
+ *
+ * DTO design pattern to collect the informations about PersonsFireStation
+ *
+ */
+
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

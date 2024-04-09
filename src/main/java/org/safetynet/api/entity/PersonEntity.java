@@ -5,6 +5,12 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ *
+ * To get the JSON data about persons
+ *
+ */
+
 @Data
 @AllArgsConstructor
 public class PersonEntity extends IdentityBasisEntity {

@@ -2,6 +2,7 @@ package org.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Data;
+
 @JsonFilter("filtreDynamiqueFireStation")
 @Data
 public class FireStation extends IdentityBasis{

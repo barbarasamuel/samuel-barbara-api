@@ -4,6 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+
+/**
+ *
+ * DTO design pattern to collect the informations about PersonChildren
+ *
+ */
+
 @Getter
 @AllArgsConstructor
 public class PersonsChildren {

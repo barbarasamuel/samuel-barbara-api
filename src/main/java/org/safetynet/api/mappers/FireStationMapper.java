@@ -6,6 +6,12 @@ import org.safetynet.api.entity.FireStationEntity;
 import org.safetynet.api.model.FireStation;
 import org.springframework.stereotype.Component;
 
+/**
+ *
+ * To map from FireStationEntity type to FireStation type or inverse
+ *
+ */
+
 @Component
 public class FireStationMapper {
     public FireStationEntity convertToFireStationEntity(FireStation fireStation){

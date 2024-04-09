@@ -10,6 +10,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *
+ * To map from MedicalRecordEntity type to MedicalRecord type or inverse
+ *
+ */
 
 @Component
 public class MedicalRecordMapper {

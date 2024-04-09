@@ -5,6 +5,12 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ *
+ * DTO design pattern to collect the informations about PersonsFlood (complement)
+ *
+ */
+
 @Getter
 @AllArgsConstructor
 public class PersonsFloodSub {
