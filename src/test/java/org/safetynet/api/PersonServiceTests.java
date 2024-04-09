@@ -1,8 +1,6 @@
 package org.safetynet.api;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.safetynet.api.builders.PersonBuilder;
 import org.safetynet.api.builders.PersonEntityBuilder;
@@ -58,9 +56,15 @@ public class PersonServiceTests {
     @MockBean
     private List<PersonEntity> personEntityList;
 
-    @BeforeAll
+    @BeforeEach
     void loadObjects() throws IOException {
         personEntityList = jsonReader.loadPersons();
+        personRepository.loadData();
+    }
+
+    @AfterEach
+    void garbageObjects() throws IOException {
+        personEntityList = null;
     }
 
     @Test

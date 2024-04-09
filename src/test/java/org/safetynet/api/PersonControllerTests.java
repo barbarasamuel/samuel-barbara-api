@@ -1,8 +1,11 @@
 package org.safetynet.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.safetynet.api.repository.MedicalRecordRepository;
+import org.safetynet.api.repository.PersonRepository;
 import org.safetynet.api.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +38,16 @@ public class PersonControllerTests {
     @Autowired
     private PersonService personService;
 
+    @Autowired
+    private PersonRepository personRepository;
 
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
+    @BeforeEach
+    void loadObjects() throws IOException {
+        medicalRecordRepository.loadData();
+        personRepository.loadData();
+    }
 
     @Test
     void firestationShouldReturnPersonListInJSONTest() throws Exception {
