@@ -3,6 +3,7 @@ package org.safetynet.api.service;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.safetynet.api.entity.MedicalRecordEntity;
 import org.safetynet.api.mappers.MedicalRecordMapper;
 import org.safetynet.api.model.MedicalRecord;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.Optional;
-
+@Slf4j
 @Service
 public class MedicalRecordService {
     @Autowired
@@ -49,11 +50,11 @@ public class MedicalRecordService {
      * To do a partial updating for a MedicalRecord data and can display result in JSON format
      *
      */
-    public MappingJacksonValue  patchMedicalRecord(String id,MedicalRecord updatedMedicalRecord) throws ParseException {
+    public MappingJacksonValue  patchMedicalRecord(String id,MedicalRecord modifiedMedicalRecord) throws ParseException {
 
-        MedicalRecordEntity updatedMedicalRecordEntity = medicalRecordMapper.convertToMedicalRecordEntity(updatedMedicalRecord);
+        MedicalRecordEntity updatedMedicalRecordEntity = medicalRecordMapper.convertToMedicalRecordEntity(modifiedMedicalRecord);
         MedicalRecordEntity dataMedicalRecord = medicalRecordRepository.patchElement(id,updatedMedicalRecordEntity);
-        updatedMedicalRecord = medicalRecordMapper.convertToMedicalRecord(Optional.ofNullable(dataMedicalRecord));
+        MedicalRecord updatedMedicalRecord = medicalRecordMapper.convertToMedicalRecord(Optional.ofNullable(dataMedicalRecord));
 
         if(updatedMedicalRecord!=null){
 
@@ -65,6 +66,7 @@ public class MedicalRecordService {
             return medicalRecordsFiltres;
         }
 
+        log.debug("patchMedicalRecord method returns a null updatedMedicalRecord for the "+id+" id.");
         return null;
     }
 

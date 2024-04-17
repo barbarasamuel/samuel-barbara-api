@@ -22,10 +22,17 @@ public class MedicalRecordController {
      */
    @PostMapping(value="/medicalRecord", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<MappingJacksonValue> postMedicalRecord(@RequestBody MedicalRecord medicalRecord) throws Exception {//public List<Person>getListPersonWithStationNumber(){
+       log.info("postMedicalRecord PostMapping request");
+       MappingJacksonValue addedMedicalRecord = null;
 
-       MappingJacksonValue addedMedicalRecord = medicalRecordService.postMedicalRecord(medicalRecord);
-       log.info("medicalRecordService.postMedicalRecord with success");
-       return new ResponseEntity<>(addedMedicalRecord, HttpStatus.CREATED);
+       try{
+           addedMedicalRecord = medicalRecordService.postMedicalRecord(medicalRecord);
+           log.info("postMedicalRecord PostMapping request with success "+addedMedicalRecord.getValue());
+           return new ResponseEntity<>(addedMedicalRecord, HttpStatus.CREATED);
+       }catch(Exception e){
+           log.error("postMedicalRecord PostMapping request : error",e);
+           return new ResponseEntity<>(addedMedicalRecord, HttpStatus.BAD_REQUEST);
+       }
 
     }
 
@@ -35,11 +42,17 @@ public class MedicalRecordController {
      *
      */
     @PatchMapping(value="/medicalRecord/{id}", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity<MappingJacksonValue> patchFireStation(@PathVariable("id") String id, @RequestBody MedicalRecord medicalRecord) throws Exception {
-
-       MappingJacksonValue updatedMedicalRecord = medicalRecordService.patchMedicalRecord(id,medicalRecord);
-       log.info("medicalRecordService.patchMedicalRecord with success");
-       return new ResponseEntity<>(updatedMedicalRecord, HttpStatus.OK);
+    public ResponseEntity<MappingJacksonValue> patchMedicalRecord(@PathVariable("id") String id, @RequestBody MedicalRecord medicalRecord) throws Exception {
+        log.info("patchMedicalRecord PatchMapping request");
+        MappingJacksonValue updatedMedicalRecord = null;
+        try{
+            updatedMedicalRecord = medicalRecordService.patchMedicalRecord(id,medicalRecord);
+            log.info("patchMedicalRecord PatchMapping request with success "+updatedMedicalRecord.getValue());
+            return new ResponseEntity<>(updatedMedicalRecord, HttpStatus.OK);
+        }catch(Exception e){
+            log.error("patchMedicalRecord PatchMapping request : error",e);
+            return new ResponseEntity<>(updatedMedicalRecord, HttpStatus.BAD_REQUEST);
+        }
 
     }
 
@@ -50,10 +63,15 @@ public class MedicalRecordController {
      */
     @DeleteMapping(value="/medicalrecords/{id}", produces = {"application/json"})
     public ResponseEntity<Void> patchPerson(@PathVariable("id") String id) throws Exception {
-
-       medicalRecordService.deleteMedicalRecord(id);
-       log.info("medicalRecordService.deleteMedicalRecord with success");
-       return ResponseEntity.ok().build();
+        log.info("deleteMedicalRecord DeleteMapping request");
+        try{
+            medicalRecordService.deleteMedicalRecord(id);
+            log.info("deleteMedicalRecord DeleteMapping request with success");
+            return ResponseEntity.ok().build();
+        }catch(Exception e){
+            log.info("deleteMedicalRecord DeleteMapping request : error",e);
+            return ResponseEntity.badRequest().build();
+        }
 
     }
 }

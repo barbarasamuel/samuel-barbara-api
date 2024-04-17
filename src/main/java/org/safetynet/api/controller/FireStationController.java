@@ -22,10 +22,17 @@ public class FireStationController {
      */
     @PostMapping(value = "/firestation", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<MappingJacksonValue> postFireStation(@RequestBody FireStation fireStation) throws Exception {
-        MappingJacksonValue addedFireStation = fireStationService.postFireStation(fireStation);
-        log.info("fireStationService.postFireStation with success");
+        log.info("postFireStation PostMapping request");
+        MappingJacksonValue addedFireStation = null;
 
-        return new ResponseEntity<>(addedFireStation, HttpStatus.CREATED);
+        try{
+            addedFireStation = fireStationService.postFireStation(fireStation);
+            log.info("postFireStation PostMapping request with success "+addedFireStation.getValue());
+            return new ResponseEntity<>(addedFireStation, HttpStatus.CREATED);
+        }catch(Exception e){
+            log.error("postFireStation PostMapping request : error",e);
+            return new ResponseEntity<>(addedFireStation, HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -35,10 +42,18 @@ public class FireStationController {
      */
     @PatchMapping(value = "/firestations/{station}", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<MappingJacksonValue> patchFireStation(@RequestBody FireStation firestation, @PathVariable("station") String id) throws Exception {
+        log.info("patchFireStation PatchMapping request");
+        MappingJacksonValue updatedFireStation = null;
 
-        MappingJacksonValue updatedFireStation = fireStationService.patchFireStation(id,firestation);
-        log.info("fireStationService.patchFireStation with success");
-        return new ResponseEntity<>(updatedFireStation, HttpStatus.OK);
+        try {
+            updatedFireStation = fireStationService.patchFireStation(id,firestation);
+            log.info("patchFireStation PatchMapping request with success "+updatedFireStation.getValue());
+            return new ResponseEntity<>(updatedFireStation, HttpStatus.OK);
+        }catch(Exception e){
+            log.error("patchFireStation PatchMapping request : error",e);
+            return new ResponseEntity<>(updatedFireStation, HttpStatus.BAD_REQUEST);
+        }
+
 
     }
 
@@ -49,9 +64,15 @@ public class FireStationController {
      */
     @DeleteMapping("/firestations/{id}")
     public ResponseEntity<Void>  deleteFireStation(@PathVariable("id") String id) throws Exception {
-        fireStationService.deleteFireStation(id);
-        log.info("fireStationService.deleteFireStation with success");
-        return ResponseEntity.ok().build();
+        log.info("deleteFireStation DeleteMapping request");
+        try{
+            fireStationService.deleteFireStation(id);
+            log.info("deleteFireStation DeleteMapping request with success");
+            return ResponseEntity.ok().build();
+        }catch(Exception e){
+            log.error("deleteFireStation DeleteMapping request : error",e);
+            return ResponseEntity.badRequest().build();
+        }
 
     }
 
