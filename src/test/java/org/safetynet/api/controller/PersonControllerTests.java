@@ -1,9 +1,10 @@
-package org.safetynet.api;
+package org.safetynet.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.safetynet.api.SafetynetApplicationTest;
 import org.safetynet.api.repository.MedicalRecordRepository;
 import org.safetynet.api.repository.PersonRepository;
 import org.safetynet.api.service.PersonService;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -157,4 +159,5 @@ public class PersonControllerTests {
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
     }
+
 }

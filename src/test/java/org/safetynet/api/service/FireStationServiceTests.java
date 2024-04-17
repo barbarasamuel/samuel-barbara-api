@@ -1,8 +1,9 @@
-package org.safetynet.api;
+package org.safetynet.api.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.safetynet.api.SafetynetApplicationTest;
 import org.safetynet.api.builders.FireStationBuilder;
 import org.safetynet.api.builders.FireStationEntityBuilder;
 import org.safetynet.api.builders.MedicalRecordBuilder;

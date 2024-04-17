@@ -1,7 +1,8 @@
-package org.safetynet.api;
+package org.safetynet.api.service;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.safetynet.api.SafetynetApplicationTest;
 import org.safetynet.api.builders.PersonBuilder;
 import org.safetynet.api.builders.PersonEntityBuilder;
 import org.safetynet.api.entity.MedicalRecordEntity;
